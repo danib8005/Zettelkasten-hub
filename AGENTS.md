@@ -20,7 +20,7 @@ Templates: `templates/<type>.md` (single source). The type is set in the frontma
 
 ## Conventions
 - File names: lowercase-with-hyphens.md, no umlauts (ä→ae). Source notes: `lastname-year-shorttitle.md`.
-- Frontmatter: `type:` is required. `aliases:` (list) for name variants. `visibility:` (private | team | public) controls sharing; if missing, private.
+- Frontmatter: `type:` is required. `aliases:` (list) for name variants. `visibility:` (private | team | public; the German forms privat | team | öffentlich are equivalent) controls sharing; if missing, private.
 - Links: standard Markdown, relative to the bundle root: `[Title](/10_Concepts/file.md)`. Link text is the target's title line. Always give a reason, ideally both ways. Targets that do not exist yet are allowed (they form a to-do list). No wikilinks.
 - Links point only to the more general (project → own bundle → shared bundle → core), never the other way.
 - Citations: quote in the original language, with location when available. Never invent quotes, locations or sources.
