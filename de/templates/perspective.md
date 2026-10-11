@@ -19,7 +19,7 @@ Die eigene Perspektive auf den Kasten, getrennt von den Regeln in AGENTS.md. Age
 (Theorien, Autorinnen, Begriffe, aus deren Linie du liest und verknüpfst.)
 
 ## Ebenen (optional)
-`Ebene:` gibt den Massstab an: **Mikro, Meso oder Makro**; Spannen sind erlaubt. Interaktion ist keine Ebene.
+`Ebene:` (englisch `Level:`) gibt den Massstab an: **Mikro, Meso oder Makro**; Spannen sind erlaubt. Interaktion ist keine Ebene.
 
 ## Begriffe
 (Welche Begriffe verwendest du einheitlich? Wo nennen andere Quellen dasselbe anders?)

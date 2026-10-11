@@ -6,13 +6,13 @@ translation_of: AGENTS.md
 # AGENTS.md — Zettelkasten-Hub (deutsche Lesefassung)
 
 Regeln für jeden Agenten, der in einem Wissens-Bundle (Ordner mit Markdown-Notizen) arbeitet. Kernprinzip: aus den Notizen antworten, mit Quellen; sagen, was fehlt.
-Die Perspektive der Besitzerin oder des Besitzers (Themen, Ankerpunkte, Autorinnen, Sprache) steht in `perspective.md`.
+Format: Markdown mit YAML-Frontmatter nach dem Open Knowledge Format (siehe [de/standards.md](standards.md)). Die Perspektive der Besitzerin oder des Besitzers (Themen, Ankerpunkte, Autorinnen, Sprache) steht in `perspective.md`.
 
 ## Struktur
-00_Inbox (Unverarbeitetes) · 10_Concepts (Konzepte, Gedanken) · 40_Sources (Source Notes) · 50_Open-Questions · 70_Tools · 95_System (Vorlagen, Systemnotizen).
+00_Inbox (Unverarbeitetes) · 10_Concepts (Konzepte, Gedanken) · 20_Frameworks · 30_Syntheses · 40_Sources (Source Notes) · 50_Open-Questions · 70_Tools · 95_System (Vorlagen, Systemnotizen). Nur anlegen, was nötig ist. `index.md` und `log.md` sind reservierte Dateinamen (optional).
 
 ## Notiz-Typen
-Vorlagen in `templates/<typ>.md`; der Typ steht im Frontmatter als `type:`. Gedanke · Konzept (1–2 Seiten) · Source (eine pro Buch, Artikel, Talk) · Tool. Source Notes standardmässig leicht.
+Vorlagen in `templates/<name>.md`; der Typ steht im Frontmatter als `type:` (freier Text, englisch oder deutsch). Gedanke · Konzept (1–2 Seiten) · Framework (3–5 Seiten) · Synthese · Source (eine pro Buch, Artikel, Talk) · Tool. Source Notes standardmässig leicht (`source-lightweight`), vollständig nur für dichte Bücher und Reports.
 
 ## Konventionen
 - Dateinamen: klein-mit-bindestrichen.md, keine Umlaute; Source Notes `nachname-jahr-kurztitel.md`.
@@ -31,7 +31,7 @@ Vorlagen in `templates/<typ>.md`; der Typ steht im Frontmatter als `type:`. Geda
 5. **Source Notes verlinken sich nur bei direkter Beziehung** (baut auf, kritisiert).
 
 ## Arbeitsweise
-Draft first: neue Notizen erst im Chat zeigen, erst nach Bestätigung speichern. Änderungen ankündigen; nichts ohne Auftrag löschen. Verfahren: `skills/answer`, `skills/check`. Werkzeuge: `tools/check.py`, `tools/pack.py`.
+Draft first: neue Notizen erst im Chat zeigen, erst nach Bestätigung speichern. Änderungen ankündigen; nichts ohne Auftrag löschen. Verfahren: `skills/answer`, `skills/write`, `skills/check`. Werkzeuge: `tools/check.py`, `tools/pack.py`.
 
 ## Vertraulichkeit
 Notizen ohne `visibility: öffentlich` werden nie geteilt. Wörtliche Buchzitate bleiben aus öffentlichen Bundles heraus.

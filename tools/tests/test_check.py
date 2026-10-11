@@ -61,6 +61,18 @@ class BrokenCopy(unittest.TestCase):
         self.assertEqual(check.main([str(ROOT / "example"), "--example"]), 0)
 
 
+class OkfConformance(unittest.TestCase):
+    def test_non_note_file_needs_type_but_reserved_files_do_not(self):
+        with tempfile.TemporaryDirectory() as d:
+            b = Path(d)
+            (b / "README.md").write_text("# no frontmatter\n", encoding="utf-8")
+            (b / "index.md").write_text("# Index\n", encoding="utf-8")
+            (b / "log.md").write_text("# Log\n", encoding="utf-8")
+            msgs = messages(run(b))
+            self.assertEqual(len(msgs), 1)
+            self.assertIn("OKF", msgs[0])
+
+
 class I18n(unittest.TestCase):
     def setUp(self):
         self.tmp = Path(tempfile.mkdtemp())

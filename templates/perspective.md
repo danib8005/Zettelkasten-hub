@@ -20,7 +20,7 @@ The owner's perspective on this bundle, kept apart from the rules in AGENTS.md. 
 (Theories, authors, terms you read and link from. One sentence each on why.)
 
 ## Levels (optional)
-`Ebene:` states the scale a concept acts on: **Mikro, Meso or Makro**. Ranges are allowed ("Meso bis Makro"). Interaction is not a level; it occurs on all levels.
+`Level:` (German bundles: `Ebene:`) states the scale a concept acts on: **micro, meso or macro** (Mikro, Meso, Makro). Ranges are allowed ("meso to macro"). Interaction is not a level; it occurs on all levels.
 - **Mikro:** individual, single situation
 - **Meso:** team, process
 - **Makro:** organisation, society

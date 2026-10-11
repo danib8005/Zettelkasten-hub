@@ -38,3 +38,5 @@ flowchart LR
   ANS --> S6["6 tools/check.py"]
   S6 --> S3
 ```
+
+More diagrams (components, how a question is answered) are in [architecture.md](architecture.md).

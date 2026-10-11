@@ -1,7 +1,7 @@
 ---
 type: Gedanke
 visibility: öffentlich
-status: example
+example: true
 ---
 # Entscheidung: Heuristik für «Warum warte ich noch?»
 

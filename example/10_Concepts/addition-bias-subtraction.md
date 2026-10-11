@@ -1,7 +1,7 @@
 ---
 type: Konzept
 visibility: öffentlich
-status: example
+example: true
 aliases: [Addition Sickness]
 ---
 # Addition Bias & Subtraction als Kompetenz

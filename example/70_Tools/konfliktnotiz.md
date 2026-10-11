@@ -1,7 +1,7 @@
 ---
 type: Tool
 visibility: öffentlich
-status: example
+example: true
 ---
 # Konfliktnotiz — Widersprüche entscheiden, ohne den Strang zu beenden
 

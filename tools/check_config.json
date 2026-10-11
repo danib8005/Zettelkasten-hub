@@ -1,5 +1,29 @@
 {
-  "note_folders": ["10_Concepts", "40_Sources", "70_Tools"],
-  "example_open_links": ["strategy-as-subtraction", "wip-limits", "weglassen-entscheidung"],
-  "i18n_required": ["README.md", "AGENTS.md", "docs/guide.md", "templates/thought.md", "templates/concept.md", "templates/source-lightweight.md", "templates/perspective.md"]
+  "note_folders": [
+    "10_Concepts",
+    "20_Frameworks",
+    "30_Syntheses",
+    "40_Sources",
+    "70_Tools"
+  ],
+  "example_open_links": [
+    "strategy-as-subtraction",
+    "wip-limits",
+    "weglassen-entscheidung"
+  ],
+  "i18n_required": [
+    "README.md",
+    "AGENTS.md",
+    "docs/guide.md",
+    "docs/standards.md",
+    "docs/architecture.md",
+    "templates/thought.md",
+    "templates/concept.md",
+    "templates/framework.md",
+    "templates/synthesis.md",
+    "templates/source-lightweight.md",
+    "templates/source-full.md",
+    "templates/tool.md",
+    "templates/perspective.md"
+  ]
 }

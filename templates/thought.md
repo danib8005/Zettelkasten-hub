@@ -1,9 +1,9 @@
 ---
-type: Gedanke
+type: Thought
 ---
 # [Title — short, what is the core?]
 
-## Rohidee
+## Raw idea
 *(date of the original note)*
 
 > «[Original wording, as it first came up]»

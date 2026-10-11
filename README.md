@@ -1,6 +1,6 @@
 # Zettelkasten-Hub
 
-A small, tool-neutral system for a knowledge base that **answers with sources, knows its gaps and can grow together with others**. Plain Markdown notes, one rules file (`AGENTS.md`), two procedures, two checking scripts. No lock-in: it works with any agent that can read files, and with chat tools via a single bundled file.
+A small, tool-neutral system for a knowledge base that **answers with sources, knows its gaps and can grow together with others**. Plain Markdown notes, one rules file (`AGENTS.md`), three procedures, eight note templates, two scripts. No lock-in: it works with any agent that can read files, and with chat tools via a single bundled file.
 
 > Status: MVP 1, work in progress. Not yet tested by people other than the author. German translation: [README.de.md](README.de.md).
 
@@ -9,8 +9,14 @@ A small, tool-neutral system for a knowledge base that **answers with sources, k
 |---|---|---|
 | Data | Markdown notes in a bundle (`example/` shows one) | everything |
 | Rules | [`AGENTS.md`](AGENTS.md) | agents that read repository files |
-| Procedures | [`skills/answer`](skills/answer/SKILL.md), [`skills/check`](skills/check/SKILL.md) as plain Markdown | any agent: "follow skills/answer" |
+| Procedures | [`skills/answer`](skills/answer/SKILL.md), [`skills/write`](skills/write/SKILL.md), [`skills/check`](skills/check/SKILL.md) as plain Markdown | any agent: "follow skills/answer" |
 | Checks and bundling | [`tools/check.py`](tools/check.py), [`tools/pack.py`](tools/pack.py), Python standard library only | by hand, in CI |
+
+## Built on standards
+Notes are Markdown with YAML frontmatter, organised as an [Open Knowledge Format](docs/standards.md) bundle (checked by `tools/check.py`); rules are in `AGENTS.md`; procedures are `SKILL.md` files; versioning is Git. Details and where we deviate: [docs/standards.md](docs/standards.md). How the parts fit together: [docs/architecture.md](docs/architecture.md).
+
+## Note types
+Thought, Concept, Framework, Synthesis, Source (lightweight or full), Tool. Templates are in [`templates/`](templates/).
 
 ## 30-minute path
 Follow the [guide](docs/guide.md): clone, fill in `perspective.md`, write your first source note and concept, ask your first question, run the check. [Diagrams](docs/diagrams.md) show the layers and the way from clone to first answer.

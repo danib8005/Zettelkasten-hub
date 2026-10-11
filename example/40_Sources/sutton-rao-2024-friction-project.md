@@ -1,7 +1,7 @@
 ---
 type: Source
 visibility: öffentlich
-status: example
+example: true
 ---
 # Sutton & Rao (2024) — The Friction Project
 

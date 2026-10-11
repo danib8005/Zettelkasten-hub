@@ -18,7 +18,7 @@ type: Source
 - **[Label].** [Paraphrase of the statement, with location if available.]
 - **[Label].** [...]
 
-📝 **Deine Notiz:** [Your own thought, only typos corrected.]
+📝 **Your note:** [Your own thought, only typos corrected.]
 
 ---
 

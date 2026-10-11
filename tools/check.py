@@ -20,6 +20,8 @@ NAME_RE = re.compile(r"^[a-z0-9]+(-[a-z0-9]+)*\.md$")
 SOURCE_NAME_RE = re.compile(r"^[a-z0-9-]+-\d{4}-[a-z0-9-]+\.md$")
 LOC_RE = re.compile(r"\bLoc\.\s?\d|\bS\.\s?\d")
 PUBLIC_VALUES = {"öffentlich", "public"}
+THOUGHT_TYPES = {"gedanke", "thought"}
+RAW_IDEA_SECTIONS = {"rohidee", "raw idea"}
 
 
 def load_config():
@@ -62,11 +64,26 @@ class Report:
             print(f"{loc}: {level} {msg}")
 
 
+RESERVED = {"index.md", "log.md"}  # OKF reserved file names: not concept documents
+
+
 def note_files(bundle, config):
     for folder in config["note_folders"]:
         base = bundle / folder
         if base.is_dir():
             yield from sorted(base.rglob("*.md"))
+
+
+def check_okf_conformance(bundle, config, report):
+    """OKF v0.2 section 11: every non-reserved .md has frontmatter with a non-empty `type`."""
+    notes = set(note_files(bundle, config))
+    for path in sorted(bundle.rglob("*.md")):
+        if path.name in RESERVED or path in notes:
+            continue  # notes get the same check in check_note
+        fm, _ = parse_frontmatter(path.read_text(encoding="utf-8").splitlines())
+        if not fm.get("type"):
+            report.add(path.relative_to(bundle), 1, "ERROR",
+                       "missing frontmatter with non-empty `type:` (OKF conformance)")
 
 
 def check_note(path, bundle, report, config, example):
@@ -111,8 +128,9 @@ def check_note(path, bundle, report, config, example):
             elif not example:
                 report.add(rel, n, "WARN", f"open link: `{target}` does not exist yet")
         if example:
-            if line.lstrip().startswith(">") and not (ntype == "Gedanke" and section == "rohidee"):
-                report.add(rel, n, "ERROR", "blockquote in example (only the Rohidee section of thought notes may quote)")
+            raw_idea = ntype.lower() in THOUGHT_TYPES and section in RAW_IDEA_SECTIONS
+            if line.lstrip().startswith(">") and not raw_idea:
+                report.add(rel, n, "ERROR", "blockquote in example (only the raw-idea section of thought notes may quote)")
             if LOC_RE.search(line):
                 report.add(rel, n, "ERROR", "location/page reference (Loc./S.) in example")
     if example and fm.get("visibility", "").lower() not in PUBLIC_VALUES:
@@ -126,6 +144,7 @@ def check_bundle(bundle, example, report):
         return
     for path in note_files(bundle, config):
         check_note(path, bundle, report, config, example)
+    check_okf_conformance(bundle, config, report)
 
 
 def check_i18n(repo, report):

@@ -1,3 +1,6 @@
+---
+type: System
+---
 # Beispielbundle
 
 Momentaufnahme (2026-10-11) aus Danis eigenem Zettelkasten, bereinigt für die Veröffentlichung: keine wörtlichen Buchzitate, keine privaten Verweise. Die Notizen bleiben in ihrer Originalsprache (deutsch). Drei Links sind absichtlich offen (`strategy-as-subtraction`, `wip-limits`, `weglassen-entscheidung`).

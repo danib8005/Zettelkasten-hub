@@ -1,7 +1,7 @@
 ---
 type: Source
 visibility: öffentlich
-status: example
+example: true
 ---
 # Albers (2024) — Die Optimierungslüge
 
