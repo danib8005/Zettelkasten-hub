@@ -1,0 +1,11 @@
+TODO (maintainer): replace this file with the official legal code of
+Creative Commons Attribution 4.0 International (CC BY 4.0), downloaded from
+https://creativecommons.org/licenses/by/4.0/legalcode.txt
+(it could not be fetched when this repository was scaffolded).
+
+Scope: all texts, templates, skills, documentation and the example bundle in
+this repository are licensed under CC BY 4.0, except the code in tools/,
+which is licensed under Apache 2.0 (see LICENSE).
+
+Copyright 2026 Daniel Boos (danib8005) and contributors.
+Human-readable summary: https://creativecommons.org/licenses/by/4.0/
