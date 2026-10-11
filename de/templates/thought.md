@@ -1,10 +1,6 @@
 ---
-type: System
-translation_of: templates/thought.md
----
-<!-- Deutsche Übersetzung, nicht massgebend. Massgebend ist die englische Fassung. -->
----
 type: Gedanke
+translation_of: templates/thought.md   # Übersetzung, nicht massgebend; beim Kopieren entfernen
 ---
 # [Titel — knapp, was ist der Kern?]
 

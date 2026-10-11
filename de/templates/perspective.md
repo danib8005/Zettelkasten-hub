@@ -1,8 +1,7 @@
 ---
 type: System
-translation_of: templates/perspective.md
+translation_of: templates/perspective.md   # Übersetzung, nicht massgebend; beim Kopieren entfernen
 ---
-<!-- Deutsche Übersetzung, nicht massgebend. Massgebend ist die englische Fassung. -->
 # Perspektive
 
 Die eigene Perspektive auf den Kasten, getrennt von den Regeln in AGENTS.md. Agenten lesen sie bei inhaltlicher Arbeit, nicht bei reiner Pflege.

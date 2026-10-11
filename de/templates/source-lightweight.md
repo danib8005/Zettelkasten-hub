@@ -1,10 +1,6 @@
 ---
-type: System
-translation_of: templates/source-lightweight.md
----
-<!-- Deutsche Übersetzung, nicht massgebend. Massgebend ist die englische Fassung. -->
----
 type: Source
+translation_of: templates/source-lightweight.md   # Übersetzung, nicht massgebend; beim Kopieren entfernen
 ---
 # [Autor] ([Jahr]) — [Kurztitel]
 

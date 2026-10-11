@@ -1,10 +1,6 @@
 ---
-type: System
-translation_of: templates/concept.md
----
-<!-- Deutsche Übersetzung, nicht massgebend. Massgebend ist die englische Fassung. -->
----
 type: Konzept
+translation_of: templates/concept.md   # Übersetzung, nicht massgebend; beim Kopieren entfernen
 ---
 # [Konzept-Titel]
 
