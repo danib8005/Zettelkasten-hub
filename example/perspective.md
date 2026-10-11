@@ -11,7 +11,7 @@ Beispielbundle: bereinigter Ausschnitt aus dem Subtraktions-Cluster von Dani (Mo
 - DB+Claude: gemeinsam entstanden, wo Claude den Ursprungstext verfasst hat
 
 ## Zweck und Kontext
-Zeigt, wie ein kleiner Kasten aussieht: ein Konzept, zwei Source Notes, ein Tool, ein Gedanke. Einzelne Links sind absichtlich offen (die Zielnotizen fehlen noch), das ist erlaubt.
+Zeigt, wie ein kleiner Kasten aussieht: ein Konzept, eine Synthese, zwei Source Notes, ein Tool, ein Gedanke. Einzelne Links sind absichtlich offen (die Zielnotizen fehlen noch), das ist erlaubt.
 
 ## Kernthemen
 - Weglassen und Subtraktion in Organisationen
