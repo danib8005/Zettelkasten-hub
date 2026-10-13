@@ -1,53 +1,50 @@
 # AGENTS.md — Zettelkasten-Hub
 
-Rules for any agent working in a knowledge bundle (a folder of Markdown notes). Core principle: answer from the notes, with sources; say what is missing.
-Format: plain Markdown with YAML frontmatter, aligned with the Open Knowledge Format (see [docs/standards.md](docs/standards.md)). The owner's perspective (topics, anchors, authors, language) is in `perspective.md`; read it for substantive work (answering, linking), not for plain maintenance.
+Shared core for every agent working in a knowledge bundle (a folder of Markdown notes). Read this file first, then the agent file for your phase in `agents/`.
+
+## Never break
+- Work from the notes, with sources; say what is missing. Every statement names its origin (note path, own note, or «not in the notes»).
+- Never invent quotes, locations or sources. Label general knowledge «not from the notes» and hypotheses as hypotheses.
+- Never delete without being asked. Announce every change to an existing note (what, why).
+- Notes without `visibility: public` are never shared or exported.
+
+## The loop
+Capture → Distill → Connect → Answer → Maintain → back to Capture. The person picks the agent; each agent ends by suggesting the next one.
+| Phase | Agent | Does | Writes |
+|---|---|---|---|
+| 1 Capture | `agents/capture.md` | takes in raw input and own thoughts | `00_Inbox`, thoughts in `10_Concepts` |
+| 2 Distill | `agents/distill.md` | turns one source into a source note | `40_Sources` |
+| 3 Connect | `agents/connect.md` | concepts, frameworks, syntheses, tools; links with reasons | `10_Concepts`, `20_Frameworks`, `30_Syntheses`, `70_Tools` |
+| 4 Answer | `agents/answer.md` | answers from the notes, lists gaps | `50_Open-Questions` (after consent) |
+| 5 Maintain | `agents/maintain.md` | checks structure and review status, turns gaps into next inputs | fixes after confirmation |
+An agent file names its role, what it reads and writes, its skills (`skills/<name>/SKILL.md`, step-by-step procedures) and its handoff. Without agent support, read the agent file of the phase you work in.
+Format: plain Markdown with YAML frontmatter, aligned with the Open Knowledge Format (see [docs/standards.md](docs/standards.md)). The owner's perspective (topics, anchors, authors, language) is in `perspective.md`; read it for substantive work, not for plain maintenance.
 
 ## Structure
-| Folder | Content |
-|---|---|
-| 00_Inbox | unprocessed captures |
-| 10_Concepts | concept and thought notes |
-| 20_Frameworks | frameworks (operative tools for thinking, 3–5 pages) |
-| 30_Syntheses | syntheses across several sources |
-| 40_Sources | source notes (books, articles, talks) |
-| 50_Open-Questions | open questions, link verdicts |
-| 70_Tools | checklists, formats, decision aids |
-| 95_System | templates, system notes |
-Create only the folders you need. `index.md` and `log.md` are reserved file names (optional overview and change history).
+`00_Inbox` unprocessed captures · `10_Concepts` concepts and thoughts · `20_Frameworks` · `30_Syntheses` · `40_Sources` source notes · `50_Open-Questions` open questions, link verdicts · `70_Tools` checklists, formats, decision aids · `95_System` templates, system notes. Create only the folders you need. `index.md` and `log.md` are reserved file names (optional overview and change history).
 
 ## Note types
-Templates: `templates/<name>.md` (single source). The type is set in the frontmatter as `type:`; its value is free text (English or German: Thought/Gedanke, Concept/Konzept, Synthesis/Synthese).
-- Thought (raw idea) · Concept (1–2 pages) · Framework (3–5 pages) · Synthesis · Source · Tool.
-- Source notes: `source-lightweight` by default; `source-full` only for dense books and reports.
-- Granularity: one source note per book, article or author series; a second one only for a real theoretical break.
+Templates: `templates/<name>.md` (single source). The type is set in the frontmatter as `type:`; its value is free text (English or German). Capture · Thought (raw idea) · Concept (1–2 pages) · Framework (3–5 pages) · Synthesis · Source · Tool · Open question.
 
 ## Conventions
 - File names: lowercase-with-hyphens.md, no umlauts (ä→ae). Source notes: `lastname-year-shorttitle.md`.
 - Frontmatter: `type:` is required in every note. `aliases:` (list) for name variants. `visibility:` (private | team | public; German privat | team | öffentlich is equivalent) controls sharing; if missing, private.
-- Links: standard Markdown, relative to the bundle root: `[Title](/10_Concepts/file.md)`. Link text is the target's title line. Always give a reason, ideally both ways. Targets that do not exist yet are allowed (a to-do list). No wikilinks.
-- Links point only to the more general (project → own bundle → shared bundle → core), never the other way.
-- Citations: quote in the original language, with location when available. Never invent quotes, locations or sources.
+- Links: standard Markdown, relative to the bundle root: `[Title](/10_Concepts/file.md)`. Link text is the target's title line. Always give a reason. Targets that do not exist yet are allowed (a to-do list). No wikilinks.
+- Citations: quote in the original language, with location when available.
 - Language: set in `perspective.md` (`language:`). Notes keep the language of their source; you answer in the language of the question.
 - Annotation markers, in the bundle's language: your own note (`📝 Your note:` / `📝 Deine Notiz:`), synthesis (`📝 Synthesis:`), agent addition (`📝 Agent:`). Never mix them.
-- Review status at the end of each note: created, last review, ✓ current / ⚠️ outdated / 🔄 under revision. Initials per author; agents use their own tag.
-- `Level:` / `Ebene:` (optional): the scale a concept acts on: micro, meso or macro; ranges allowed. Interaction is not a level.
+- Review status at the end of each note: created, last review, ✓ current / ⚠️ outdated / 🔄 under revision. Initials per author; each agent signs with its own tag (`agent:capture`, `agent:distill`, …).
 - People: source notes use real names; project and reflection notes use a role or an agreed abbreviation.
 
-## Quality principles
-1. **Answer with sources.** Every statement names its origin (source note, concept, own note, or «not in the notes»). Name gaps. Mark interpretation and hypotheses as such. Never present general knowledge as a finding; if you add it, label it «not from the notes».
-   Explain *why these notes* only when asked («Warum diese Zettel?»). Keep the answer short; the reasoning must stay retrievable.
-2. **Precise and simple.** Core statement first, in one sentence. One standard definition per concept: link instead of redefining. Source notes hold only what carries the argument.
-3. **Draw from the material.** Let the material speak before attaching it to favourite topics. Save the owner's own thoughts as separate thought notes.
-4. **Keep several perspectives.** Record agreement and contradiction; approaches may be combinable, conflicting or incommensurable.
-5. **Source notes link to each other only on direct relation** (builds on, criticises). Thematic cross-links belong in a concept or synthesis.
+## Quality principles (all phases)
+1. **Answer with sources.** Every statement names its origin; name gaps; mark interpretation and hypotheses as such.
+2. **Precise and simple.** Core statement first, in one sentence. One standard definition per concept: link instead of redefining.
+Principles 3–5 apply to single phases and are in the agent files.
 
-## Working method
-- Draft first: show a new note in the chat as a draft (content, context, links with reasons, one or two questions to think about). Save only after confirmation. The questions do not go into the note.
-- No draft needed for small corrections or inbox captures. Announce changes to existing notes (what, why). Never delete without being asked.
-- Procedures are plain Markdown in `skills/<name>/SKILL.md`: `answer`, `write`, `check`.
-- `tools/check.py` checks structure and format conformance; `tools/pack.py` bundles rules, a skill and chosen notes into one file for chat tools without file access.
+## Tools
+`tools/check.py` checks structure and format conformance. `tools/pack.py` bundles these rules, one agent (or one skill) and chosen notes into one file for chat tools without file access. `tools/catalog.py` builds a catalog of source notes.
 
-## Confidentiality
+## Confidentiality (read last)
 - Notes without `visibility: public` are never shared or exported.
 - Verbatim quotes from books stay out of any public bundle; use paraphrase with source.
+- Never invent quotes, locations or sources. Never delete without being asked.
