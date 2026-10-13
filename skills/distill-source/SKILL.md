@@ -14,7 +14,7 @@ Follow `AGENTS.md` and your agent file. Tool-neutral: read the source the person
 4. **Pick the key statements** that carry the argument; organise by theme, not by chapter. Paraphrase; quote briefly, in the original language, with location when available. Never invent a quote, a location or a bibliographic detail; leave a gap marked `[?]` instead.
 5. **Keep the owner's voice separate.** Their comments go after `📝 Your note:` / `📝 Deine Notiz:`, wording kept; your additions after `📝 Agent:`.
 6. **Links.** To concepts the source supports or challenges, each with a reason. To other source notes only on direct relation (builds on, criticises).
-7. **Hand over to [`draft-first`](../draft-first/SKILL.md).** After saving, list the concepts and syntheses the new source touches; if the source came from `00_Inbox`, propose marking the capture as processed.
+7. **Hand over to [`draft-first`](../draft-first/SKILL.md).** After saving, list the concepts and syntheses the new source touches; if the source came from `00_Inbox`, name the capture so that Maintain can mark it as processed (Distill writes only `40_Sources`).
 
 ## Final check
 - Core thesis first; only what carries the argument.

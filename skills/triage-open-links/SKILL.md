@@ -8,7 +8,7 @@ description: Turn open links, open questions and unprocessed captures into a sho
 Follow `AGENTS.md` and your agent file. Tool-neutral.
 
 ## Procedure
-1. **Collect.** Open links (the WARN lines of `tools/check.py`), notes in `50_Open-Questions/` with status ❓ open, and captures in `00_Inbox/` still marked 📥 unprocessed.
+1. **Collect.** Open links (the WARN lines of `tools/check.py`), notes in `50_Open-Questions/` with status ❓ open, and captures in `00_Inbox/` still marked 📥 unprocessed. A capture whose source already has a source note: propose marking it ✓ processed (with the link).
 2. **Count demand.** For each open link target: how many notes want it. For each open question: how often it came up and how long it has been open.
 3. **Rank** by demand and by closeness to the core topics in `perspective.md`. Keep the list short (five to ten items).
 4. **Assign the next phase** per item: needs a source → Capture; a capture waits → Distill; the material exists but the note does not → Connect; no longer relevant → propose dropping (the person decides; nothing is deleted).
@@ -16,4 +16,4 @@ Follow `AGENTS.md` and your agent file. Tool-neutral.
 
 ## Final check
 - The list is short and ranked; every item names its next phase.
-- Nothing was created, changed or deleted by the triage itself.
+- Nothing was created, changed or deleted by the triage itself; marking captures processed happens only after confirmation.
