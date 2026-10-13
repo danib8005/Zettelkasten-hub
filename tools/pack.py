@@ -3,8 +3,8 @@
 without file access. Standard library only; no AI involved.
 
 Usage:
-  python tools/pack.py BUNDLE_DIR -k addition bias --skill answer
-  python tools/pack.py BUNDLE_DIR -f 10_Concepts/a.md 40_Sources/b.md --skill answer -o pack.md
+  python tools/pack.py BUNDLE_DIR -k addition bias --skill answer-from-notes
+  python tools/pack.py BUNDLE_DIR -f 10_Concepts/a.md 40_Sources/b.md --skill answer-from-notes -o pack.md
 
 Notes are chosen by keyword score (title counts triple) or by explicit file list.
 By default notes are copied verbatim. Optional mechanical reductions, never rephrasing:
@@ -151,7 +151,7 @@ def main(argv=None):
     ap.add_argument("bundle", help="bundle directory")
     ap.add_argument("-k", "--keywords", nargs="*", default=[], help="keywords or a question")
     ap.add_argument("-f", "--files", nargs="*", default=[], help="notes relative to the bundle")
-    ap.add_argument("-s", "--skill", default=None, help="procedure to include (e.g. answer)")
+    ap.add_argument("-s", "--skill", default=None, help="procedure to include (e.g. answer-from-notes)")
     ap.add_argument("-n", "--max-notes", type=int, default=6)
     ap.add_argument("--visibility", nargs="*", default=["public"], help="allowed visibility values (default: public)")
     ap.add_argument("--include-private", action="store_true", help="do not filter by visibility")

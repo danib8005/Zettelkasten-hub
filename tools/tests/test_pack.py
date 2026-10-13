@@ -17,7 +17,7 @@ class Pack(unittest.TestCase):
 
     def test_notes_verbatim_with_path_headings(self):
         notes = pack.select(EX, [], ["/10_Concepts/addition-bias-subtraction.md"], 1)
-        text = pack.build(EX, notes, "answer")
+        text = pack.build(EX, notes, "answer-from-notes")
         self.assertIn("### /10_Concepts/addition-bias-subtraction.md", text)
         self.assertIn(notes[0].read_text(encoding="utf-8").rstrip(), text)
         self.assertIn("AGENTS.md", text)
