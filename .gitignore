@@ -1,2 +1,4 @@
 _input/
 __pycache__/
+.github/*
+Notes.md
