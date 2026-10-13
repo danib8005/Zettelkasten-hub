@@ -26,6 +26,14 @@
     "templates/source-lightweight.md",
     "templates/source-full.md",
     "templates/tool.md",
-    "templates/perspective.md"
+    "templates/perspective.md",
+    "templates/agent.md",
+    "templates/capture.md",
+    "templates/open-question.md",
+    "agents/capture.md",
+    "agents/distill.md",
+    "agents/connect.md",
+    "agents/answer.md",
+    "agents/maintain.md"
   ]
 }

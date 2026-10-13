@@ -11,8 +11,9 @@ Prinzip: **offene, portable Standards statt proprietärer Konventionen.** Ein Bu
 |---|---|---|
 | Dokumente | Markdown (CommonMark-kompatibel), UTF-8, mit YAML-Frontmatter | Jede Notiz ist eine einfache Datei. Jeder Editor, GitHub und Static-Site-Werkzeuge stellen sie dar. |
 | Wissens-Bundle | **Open Knowledge Format (OKF) v0.2** | Unsere Bundles folgen dem Modell: Verzeichnisbaum aus Markdown-Konzeptdokumenten, je mit `type` im Frontmatter, Standard-Links relativ zur Bundle-Wurzel, optional `index.md` / `log.md`. Zuordnung unten. |
-| Agenten-Anweisungen | `AGENTS.md` (offene, werkzeugneutrale Konvention für Repo-Anweisungen) | Eine Regeldatei im Wurzelordner. `CLAUDE.md` enthält nur `@AGENTS.md`. Keine herstellerspezifischen Schlüssel. |
-| Verfahren | `skills/<name>/SKILL.md` (Markdown mit Frontmatter `name`, `description`) | Als normale Anleitung geschrieben. «Folge `skills/answer`» funktioniert in jedem Agenten; nichts braucht einen Skill-Loader. |
+| Agenten-Anweisungen | `AGENTS.md` (offene, werkzeugneutrale Konvention für Repo-Anweisungen) | Eine gemeinsame Regeldatei im Wurzelordner. `CLAUDE.md` enthält nur `@AGENTS.md`. Keine herstellerspezifischen Schlüssel. |
+| Agenten | `agents/<phase>.md` (Markdown mit Frontmatter `type: Agent`, `name`, `description`, `phase`, `skills`, `reads`, `writes`) | Eine Rolle pro Phase, werkzeugneutral. Schlanke Adapter für Werkzeuge, die Agenten auflisten: `.github/agents/<name>.agent.md` (GitHub Copilot) und `.claude/agents/<name>.md` (Claude Code); sie verweisen nur auf die neutrale Datei und beschränken Werkzeuge. |
+| Verfahren | `skills/<name>/SKILL.md` (Markdown mit Frontmatter `name`, `description`) | Als normale Anleitung geschrieben. «Folge `skills/answer-from-notes`» funktioniert in jedem Agenten; nichts braucht einen Skill-Loader. VS Code findet sie über `.vscode/settings.json`. |
 | Versionierung, Beiträge | Git | Verlauf ist der Prüfpfad; Beiträge per Pull-Request oder Inbox-Datei. |
 | Diagramme | Mermaid in Markdown | GitHub rendert sie; die Quelle bleibt lesbarer Text. |
 | Code | Python 3, nur Standardbibliothek | Keine Abhängigkeiten, kein Build. |
@@ -26,7 +27,7 @@ OKF ist ein schlankes, werkzeugunabhängiges Format für Wissenskorpora von Goog
 |---|---|
 | Bundle = Verzeichnisbaum aus `.md`-Dateien, als Git-Repo verteilbar | Gleich. Ein Bundle ist ein Ordner (das Beispiel ist `example/`); Ordnernamen sind unsere Konvention, OKF lässt sie frei. |
 | Jede nicht reservierte `.md` hat lesbares Frontmatter mit nicht leerem `type` (Konformität, §11) | Gleich; **`tools/check.py` erzwingt es** für jede `.md` im Bundle ausser `index.md` und `log.md`. |
-| `type`-Werte sind nicht registriert; Konsumenten tolerieren unbekannte | Freier Text. Vorlagen nutzen `Thought`, `Concept`, `Framework`, `Synthesis`, `Source`, `Tool`; deutsche Bundles `Gedanke`, `Konzept`, `Synthese`. |
+| `type`-Werte sind nicht registriert; Konsumenten tolerieren unbekannte | Freier Text. Vorlagen nutzen `Capture`, `Thought`, `Concept`, `Framework`, `Synthesis`, `Source`, `Tool`, `Open question`; deutsche Bundles `Gedanke`, `Konzept`, `Synthese`, `Offene Frage`. |
 | Links: Standard-Markdown, bundle-relativ `/pfad.md` empfohlen, kaputte Links toleriert | Gleich. Fehlende Ziele sind eine gewollte Bestellliste; `check.py` meldet sie als Warnung. |
 | Reservierte `index.md`, `log.md` (optional) | Reserviert, in MVP 1 nicht erzeugt. |
 | Empfohlen `title`, `description`, `tags`, `resource` | Nicht verlangt. Der Titel ist die erste `#`-Überschrift (Linktext = Titelzeile); Tags vorerst als `#tags` im Text. Später kann `title`/`tags` als Frontmatter erzeugt werden. |
