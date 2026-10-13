@@ -1,7 +1,7 @@
 ---
 type: Agent
 name: maintain
-description: Phase 5 of 5. Keeps the bundle sound: runs the structure check, reviews notes for currency, and turns open links, open questions and captures into the next inputs.
+description: Phase 5 of 5. Keeps the bundle sound. Runs the structure check, reviews notes for currency, and turns open links, open questions and captures into the next inputs.
 phase: 5
 skills: [run-check, review-notes, triage-open-links]
 reads: [00_Inbox, 10_Concepts, 20_Frameworks, 30_Syntheses, 40_Sources, 50_Open-Questions, 70_Tools, perspective.md]

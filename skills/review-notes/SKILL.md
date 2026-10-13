@@ -1,6 +1,6 @@
 ---
 name: review-notes
-description: Review notes for currency and quality: review status, outdated content, notes affected by a new source, and conformance with their template and the quality principles.
+description: Review notes for currency and quality (review status, outdated content, notes affected by a new source) and for conformance with their template and the quality principles.
 ---
 
 # Review notes

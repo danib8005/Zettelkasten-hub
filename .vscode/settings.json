@@ -1,0 +1,10 @@
+{
+  "chat.agentSkillsLocations": {
+    "skills": true,
+    ".github/skills": true
+  },
+  "chat.agentFilesLocations": {
+    ".github/agents": true,
+    ".claude/agents": false
+  }
+}
