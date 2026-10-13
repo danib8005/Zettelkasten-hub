@@ -18,7 +18,7 @@ flowchart LR
 
 | Phase | Agent | What it does | Writes | Skills |
 |---|---|---|---|---|
-| 1 Capture | [`capture`](agents/capture.md) | takes in links, excerpts and your own ideas, without processing | `00_Inbox`, thoughts in `10_Concepts` | capture-inbox, capture-thought, find-existing |
+| 1 Capture | [`capture`](agents/capture.md) | takes in links, excerpts and your own ideas, without processing | `00_Inbox`, thoughts in `10_Concepts` | capture-inbox, capture-thought, capture-zotero, find-existing |
 | 2 Distill | [`distill`](agents/distill.md) | turns one source into a source note, draft first | `40_Sources` | find-existing, draft-first, distill-source |
 | 3 Connect | [`connect`](agents/connect.md) | concepts, frameworks, syntheses and tools, linked with reasons | `10_Concepts`, `20_Frameworks`, `30_Syntheses`, `70_Tools` | find-existing, draft-first, write-concept, synthesize, write-tool |
 | 4 Answer | [`answer`](agents/answer.md) | answers from the notes only, origin per statement, gap list | `50_Open-Questions` (only with your consent) | answer-from-notes, record-open-question |
@@ -34,8 +34,9 @@ You pick the agent; each one ends by suggesting the next. Writing agents also su
 | Data | Markdown notes in a bundle (`example/` shows one) | everything |
 | Rules | [`AGENTS.md`](AGENTS.md): the shared core | agents that read repository files |
 | Agents | [`agents/`](agents/): one role per phase, plus thin adapters in `.github/agents/` (GitHub Copilot) and `.claude/agents/` (Claude Code) | any agent: "follow agents/answer.md" |
-| Procedures | [`skills/`](skills/): thirteen `SKILL.md` files in plain Markdown | used by the agents; any agent can follow one |
+| Procedures | [`skills/`](skills/): fourteen `SKILL.md` files in plain Markdown | used by the agents; any agent can follow one |
 | Checks and bundling | [`tools/check.py`](tools/check.py), [`tools/pack.py`](tools/pack.py), [`tools/catalog.py`](tools/catalog.py), Python standard library only | by hand, in CI |
+| Zotero highlights | [`tools/zotero_highlights.py`](tools/zotero_highlights.py): reads highlights from a running Zotero (read-only local API) | the Capture agent, after asking |
 
 ## Built on standards
 Notes are Markdown with YAML frontmatter, organised as an [Open Knowledge Format](docs/standards.md) bundle (checked by `tools/check.py`); rules are in `AGENTS.md`; agents and procedures are Markdown files; versioning is Git. Details and where we deviate: [docs/standards.md](docs/standards.md). How the parts fit together: [docs/architecture.md](docs/architecture.md).

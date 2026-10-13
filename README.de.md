@@ -23,7 +23,7 @@ flowchart LR
 
 | Phase | Agent | Was er tut | Schreibt | Skills |
 |---|---|---|---|---|
-| 1 Capture | [`capture`](agents/capture.md) | nimmt Links, Auszüge und eigene Ideen auf, ohne sie zu verarbeiten | `00_Inbox`, Gedanken in `10_Concepts` | capture-inbox, capture-thought, find-existing |
+| 1 Capture | [`capture`](agents/capture.md) | nimmt Links, Auszüge und eigene Ideen auf, ohne sie zu verarbeiten | `00_Inbox`, Gedanken in `10_Concepts` | capture-inbox, capture-thought, capture-zotero, find-existing |
 | 2 Distill | [`distill`](agents/distill.md) | macht aus einer Quelle eine Source Note, Draft first | `40_Sources` | find-existing, draft-first, distill-source |
 | 3 Connect | [`connect`](agents/connect.md) | Konzepte, Frameworks, Synthesen und Tools, mit begründeten Links | `10_Concepts`, `20_Frameworks`, `30_Syntheses`, `70_Tools` | find-existing, draft-first, write-concept, synthesize, write-tool |
 | 4 Answer | [`answer`](agents/answer.md) | antwortet nur aus den Notizen, Herkunft pro Aussage, Lückenliste | `50_Open-Questions` (nur mit deiner Zustimmung) | answer-from-notes, record-open-question |
@@ -39,8 +39,9 @@ Du wählst den Agenten; jeder schlägt am Ende den nächsten vor. Schreibende Ag
 | Daten | Markdown-Notizen in einem Bundle (`example/` zeigt eines) | überall |
 | Regeln | [`AGENTS.md`](AGENTS.md): der gemeinsame Kern | Agenten, die Repo-Dateien lesen |
 | Agenten | [`agents/`](agents/): eine Rolle pro Phase, dazu schlanke Adapter in `.github/agents/` (GitHub Copilot) und `.claude/agents/` (Claude Code) | jeder Agent: «folge agents/answer.md» |
-| Verfahren | [`skills/`](skills/): dreizehn `SKILL.md`-Dateien als normale Markdown-Anleitung | von den Agenten genutzt; jeder Agent kann einem folgen |
+| Verfahren | [`skills/`](skills/): vierzehn `SKILL.md`-Dateien als normale Markdown-Anleitung | von den Agenten genutzt; jeder Agent kann einem folgen |
 | Prüfung und Bündeln | [`tools/check.py`](tools/check.py), [`tools/pack.py`](tools/pack.py), [`tools/catalog.py`](tools/catalog.py), nur Python-Standardbibliothek | von Hand, in CI |
+| Zotero-Markierungen | [`tools/zotero_highlights.py`](tools/zotero_highlights.py): liest Markierungen aus einem laufenden Zotero (lesende lokale API) | der Agent Capture, nach Rückfrage |
 
 ## Gebaut auf Standards
 Notizen sind Markdown mit YAML-Frontmatter und als Bundle nach dem [Open Knowledge Format](de/standards.md) organisiert (geprüft von `tools/check.py`); Regeln stehen in `AGENTS.md`; Agenten und Verfahren sind Markdown-Dateien; Versionierung läuft über Git. Einzelheiten und Abweichungen: [de/standards.md](de/standards.md). Wie die Teile zusammenspielen: [de/architecture.md](de/architecture.md).

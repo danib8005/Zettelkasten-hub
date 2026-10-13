@@ -19,7 +19,7 @@ flowchart TB
   subgraph Core["Core (this repo, no knowledge)"]
     AG["AGENTS.md<br/>shared rules, the loop"]
     AN["agents/ capture, distill, connect,<br/>answer, maintain<br/>(+ thin tool adapters)"]
-    SK["skills/ 13 procedures<br/>in plain Markdown"]
+    SK["skills/ 14 procedures<br/>in plain Markdown"]
     TP["templates/<br/>note types, agent"]
     CK["tools/check.py<br/>structure, OKF, agents"]
     PK["tools/pack.py<br/>bundle into one file"]
@@ -68,19 +68,19 @@ Strict separation: **data** (Markdown) · **rules** (`AGENTS.md`) · **roles** (
 
 **`agents/`**: one file per phase (`capture`, `distill`, `connect`, `answer`, `maintain`), built from `templates/agent.md`. Frontmatter: `type: Agent`, `name`, `description`, `phase`, `skills`, `reads`, `writes`. Sections: Role, Goal and when to use, Reads, Writes, Skills, Phase rules, Handoff, Final check. The phase-specific rules live here (for example draft-first in Distill and Connect, principles 3–5). The person picks the agent; each one suggests the next phase.
 
-**Adapters**: `.github/agents/<name>.agent.md` (GitHub Copilot) and `.claude/agents/<name>.md` (Claude Code) hold only the tool's frontmatter and one line pointing to `AGENTS.md` and the neutral agent file. Their `tools:` are derived from the agent's write scope: all agents read, search and edit; only Maintain may run commands. Folder-level write limits cannot be enforced by these tools; they are declared in the agent file and checked in the acceptance test. `.vscode/settings.json` points VS Code to `skills/`.
+**Adapters**: `.github/agents/<name>.agent.md` (GitHub Copilot) and `.claude/agents/<name>.md` (Claude Code) hold only the tool's frontmatter and one line pointing to `AGENTS.md` and the neutral agent file. Their `tools:` are derived from the agent's write scope: all agents read, search and edit; only Maintain may run commands, and Capture may run `tools/zotero_highlights.py` and nothing else. Folder-level write limits cannot be enforced by these tools; they are declared in the agent file and checked in the acceptance test. `.vscode/settings.json` points VS Code to `skills/`.
 
-**`skills/`**: thirteen procedures, named verb-object, shared where useful:
+**`skills/`**: fourteen procedures, named verb-object, shared where useful:
 | Skill | Used by |
 |---|---|
-| `capture-inbox`, `capture-thought` | Capture |
+| `capture-inbox`, `capture-thought`, `capture-zotero` | Capture |
 | `find-existing` | Capture, Distill, Connect |
 | `draft-first` | Distill, Connect |
 | `distill-source` | Distill |
 | `write-concept`, `synthesize`, `write-tool` | Connect |
 | `answer-from-notes`, `record-open-question` | Answer |
 | `run-check`, `review-notes`, `triage-open-links` | Maintain |
-They name no tool; an agent uses whatever search and file access it has.
+They name no tool; an agent uses whatever search and file access it has. The exception is `capture-zotero`, which needs `tools/zotero_highlights.py`; without command access the person runs it and pastes the output.
 
 **`tools/check.py`** (no AI, exit code 1 on errors):
 | Rule | Level |
@@ -99,6 +99,8 @@ They name no tool; an agent uses whatever search and file access it has.
 **`tools/pack.py`** (no AI): selects notes by keyword score (title counts triple) or by file list, then writes one `pack.md`. With `-a <agent>`: preamble → `AGENTS.md` → the agent file → its skills in `skills:` order → bundle `perspective.md` → notes, each under its path as heading → the agent's final check again at the end, so the rules sit at the start and the end and the notes in the middle; notes are then chosen only from the agent's `reads:` folders. With `-s <skill>` (exclusive with `-a`): one procedure instead of an agent. Notes are copied verbatim. It prints the character count and warns above 30,000 characters.
 
 **`tools/catalog.py`** (no AI): builds a thematic catalog of source notes from a manifest (one file per group, verbatim title, reference, core thesis and tags, each under its note path), for chat tools that need an overview of many sources. Used by the Answer agent without file access.
+
+**`tools/zotero_highlights.py`** (no AI): reads highlights from a running Zotero desktop app through its read-only local API (`127.0.0.1:23119`, personal library only; Zotero setting «Allow other applications on this computer to communicate with Zotero»). `status` checks Zotero, `search` finds an item, `fetch` prints one Markdown block per item (exact text, page label, the owner's comment) with the highlights not yet imported, `mark-done` records them in the bundle's `.zotero-sync.json` (library version and imported annotation keys) after the notes are saved. Ink and image annotations are skipped. Used by the Capture agent through `capture-zotero`.
 
 ## 5. How a question is answered
 ```mermaid
@@ -126,7 +128,7 @@ Own bundle and shared bundle side by side; a `bundles.md` file declares mount po
 - `visibility:` per note (private | team | public); missing means private. Only `public` notes may be exported.
 - Public bundles contain no verbatim book quotes; `check.py --example` enforces this for examples.
 - Person names: source notes use real names, project notes a role or abbreviation.
-- Scripts only read and write local files; they send nothing anywhere.
+- Scripts only read and write local files; they send nothing anywhere. `zotero_highlights.py` also reads from Zotero on the same machine (`127.0.0.1`), never from the internet.
 
 ## 8. Decisions and trade-offs
 | Decision | Why | Cost |
@@ -148,4 +150,4 @@ Own bundle and shared bundle side by side; a `bundles.md` file declares mount po
 - No search index; fine for hundreds of notes, a hosted index is a later step.
 
 ## 10. Roadmap
-MVP 1 (this repo): shared rules, five phase agents with adapters, thirteen skills, templates, three scripts, example. Then: two bundles together (MVP 2); project module; a router agent; capture channels; MCP server (read-only) and hosting; surprise impulses and review impulses.
+MVP 1 (this repo): shared rules, five phase agents with adapters, fourteen skills, templates, four scripts, example. Then: two bundles together (MVP 2); project module; a router agent; capture channels; MCP server (read-only) and hosting; surprise impulses and review impulses.
