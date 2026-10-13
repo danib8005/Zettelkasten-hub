@@ -6,8 +6,9 @@ Principle: **open, portable standards over proprietary conventions.** A bundle m
 |---|---|---|
 | Documents | Markdown (CommonMark-compatible), UTF-8, with YAML frontmatter | Every note is one plain file. Any editor, GitHub and static-site tools render it. |
 | Knowledge bundle | **Open Knowledge Format (OKF) v0.2** | Our bundles follow its model: a directory tree of Markdown concept documents, each with a frontmatter `type`, standard bundle-relative links, optional `index.md` / `log.md`. See the mapping below. |
-| Agent instructions | `AGENTS.md` (open, tool-neutral convention for repository instructions) | One rules file at the root. `CLAUDE.md` contains only `@AGENTS.md`. No vendor-specific keys. |
-| Procedures | `skills/<name>/SKILL.md` (Markdown with frontmatter `name`, `description`) | Written as plain instructions. "Follow `skills/answer`" works in any agent; nothing needs a skill loader. |
+| Agent instructions | `AGENTS.md` (open, tool-neutral convention for repository instructions) | One shared rules file at the root. `CLAUDE.md` contains only `@AGENTS.md`. No vendor-specific keys. |
+| Agents | `agents/<phase>.md` (Markdown with frontmatter `type: Agent`, `name`, `description`, `phase`, `skills`, `reads`, `writes`) | One role per phase, tool-neutral. Thin adapters for tools that list agents: `.github/agents/<name>.agent.md` (GitHub Copilot) and `.claude/agents/<name>.md` (Claude Code); they only point to the neutral file and restrict tools. |
+| Procedures | `skills/<name>/SKILL.md` (Markdown with frontmatter `name`, `description`) | Written as plain instructions. "Follow `skills/answer-from-notes`" works in any agent; nothing needs a skill loader. VS Code finds them through `.vscode/settings.json`. |
 | Versioning and contribution | Git | History is the audit trail; contributions by pull request or inbox file. |
 | Diagrams | Mermaid inside Markdown | Rendered by GitHub; the source stays readable text. |
 | Code | Python 3, standard library only | No dependencies, no build step. |
@@ -21,7 +22,7 @@ OKF is a lean, tool-independent format for knowledge corpora published by Google
 |---|---|
 | Bundle = directory tree of `.md` files, distributable as a git repo | Same. A bundle is a folder (the example is `example/`); folder names are our convention, OKF leaves them free. |
 | Every non-reserved `.md` has parseable frontmatter with a non-empty `type` (conformance, §11) | Same; **enforced by `tools/check.py`** for every `.md` in a bundle except `index.md` and `log.md`. |
-| `type` values are not registered; consumers tolerate unknown types | Free text. Templates use `Thought`, `Concept`, `Framework`, `Synthesis`, `Source`, `Tool`; German bundles use `Gedanke`, `Konzept`, `Synthese`. |
+| `type` values are not registered; consumers tolerate unknown types | Free text. Templates use `Capture`, `Thought`, `Concept`, `Framework`, `Synthesis`, `Source`, `Tool`, `Open question`; German bundles use `Gedanke`, `Konzept`, `Synthese`, `Offene Frage`. |
 | Links: standard Markdown, bundle-relative `/path.md` recommended, broken links tolerated | Same. Missing targets are a deliberate to-do list; `check.py` reports them as warnings. |
 | Reserved `index.md`, `log.md` (optional) | Reserved, not generated in MVP 1. |
 | Recommended `title`, `description`, `tags`, `resource` | Not required. The title is the first `#` heading (link text = title line); tags are inline `#tags` for now. A later step may emit `title`/`tags` frontmatter. |
