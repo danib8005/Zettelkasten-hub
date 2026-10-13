@@ -1,9 +1,11 @@
 {
   "note_folders": [
+    "00_Inbox",
     "10_Concepts",
     "20_Frameworks",
     "30_Syntheses",
     "40_Sources",
+    "50_Open-Questions",
     "70_Tools"
   ],
   "example_open_links": [

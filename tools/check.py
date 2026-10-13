@@ -3,7 +3,8 @@
 
 Usage:
   python tools/check.py BUNDLE_DIR [--example]   check the notes of one bundle
-  python tools/check.py --i18n [REPO_DIR]        check German translations of system documents
+  python tools/check.py --i18n [REPO_DIR]        repo check: German translations of system documents,
+                                                 agents, their skills and their tool adapters
 
 Output: one finding per line, "path:line: LEVEL message". Exit code 1 if any ERROR.
 """
@@ -22,6 +23,12 @@ LOC_RE = re.compile(r"\bLoc\.\s?\d|\bS\.\s?\d")
 PUBLIC_VALUES = {"öffentlich", "public"}
 THOUGHT_TYPES = {"gedanke", "thought"}
 RAW_IDEA_SECTIONS = {"rohidee", "raw idea"}
+BUNDLE_FOLDERS = {"00_Inbox", "10_Concepts", "20_Frameworks", "30_Syntheses", "40_Sources",
+                  "50_Open-Questions", "70_Tools", "95_System"}
+AGENT_FIELDS = ("type", "name", "description", "phase", "skills", "reads", "writes")
+AGENT_SECTIONS = ("Role", "Goal and when to use", "Reads", "Writes", "Skills",
+                  "Phase rules", "Handoff", "Final check")
+ADAPTERS = ((".github/agents", "{}.agent.md"), (".claude/agents", "{}.md"))
 
 
 def load_config():
@@ -166,13 +173,70 @@ def check_i18n(repo, report):
     for req in config.get("i18n_required", []):
         if (repo / req).is_file() and req not in translated:
             report.add(req, 0, "ERROR", "no German translation (expected a file with translation_of: " + req + ")")
+    check_agents(repo, report)
+
+
+def as_list(value):
+    value = value.strip()
+    if value.startswith("[") and value.endswith("]"):
+        return [v.strip() for v in value[1:-1].split(",") if v.strip()]
+    return [value] if value else []
+
+
+def check_agents(repo, report):
+    """Agents in agents/: frontmatter, sections, skills, write scope, and one adapter per tool."""
+    agent_dir = repo / "agents"
+    if not agent_dir.is_dir():
+        return
+    names, used_skills = set(), set()
+    for path in sorted(agent_dir.glob("*.md")):
+        rel = path.relative_to(repo).as_posix()
+        lines = path.read_text(encoding="utf-8").splitlines()
+        fm, _ = parse_frontmatter(lines)
+        for field in AGENT_FIELDS:
+            if field not in fm or (field != "writes" and not fm[field]):
+                report.add(rel, 1, "ERROR", f"agent frontmatter needs `{field}:`")
+        if fm.get("type") and fm["type"] != "Agent":
+            report.add(rel, 1, "ERROR", "agent `type:` must be Agent")
+        name = fm.get("name", "")
+        if name and name != path.stem:
+            report.add(rel, 1, "ERROR", f"agent `name: {name}` must match the file name")
+        names.add(path.stem)
+        if fm.get("phase") and not re.fullmatch(r"[1-5]", fm["phase"]):
+            report.add(rel, 1, "ERROR", "agent `phase:` must be a number from 1 to 5")
+        for skill in as_list(fm.get("skills", "")):
+            used_skills.add(skill)
+            if not (repo / "skills" / skill / "SKILL.md").is_file():
+                report.add(rel, 1, "ERROR", f"skill `{skill}` not found (skills/{skill}/SKILL.md)")
+        for folder in as_list(fm.get("writes", "")):
+            if folder not in BUNDLE_FOLDERS:
+                report.add(rel, 1, "ERROR", f"`writes:` folder `{folder}` is not a bundle folder")
+        headings = {l[3:].strip() for l in lines if l.startswith("## ")}
+        for title in AGENT_SECTIONS:
+            if title not in headings:
+                report.add(rel, 0, "ERROR", f"agent section `## {title}` missing")
+    for folder, pattern in ADAPTERS:
+        for name in sorted(names):
+            if not (repo / folder / pattern.format(name)).is_file():
+                report.add(f"{folder}/{pattern.format(name)}", 0, "ERROR",
+                           f"adapter missing for agent `{name}`")
+        base = repo / folder
+        suffix = pattern.format("")
+        for path in sorted(base.glob("*.md")) if base.is_dir() else []:
+            stem = path.name[: -len(suffix)] if path.name.endswith(suffix) else path.stem
+            if stem not in names:
+                report.add(f"{folder}/{path.name}", 0, "ERROR", "adapter without an agent in agents/")
+    skills_dir = repo / "skills"
+    for path in sorted(skills_dir.glob("*/SKILL.md")) if skills_dir.is_dir() else []:
+        if path.parent.name not in used_skills:
+            report.add(path.relative_to(repo).as_posix(), 0, "WARN", "skill is not used by any agent")
 
 
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("path", nargs="?", default=None, help="bundle directory (or repo directory with --i18n)")
     ap.add_argument("--example", action="store_true", help="publishing rules for example bundles")
-    ap.add_argument("--i18n", action="store_true", help="check German translations of system documents")
+    ap.add_argument("--i18n", action="store_true", help="repo check: German translations, agents, skills, adapters")
     args = ap.parse_args(argv)
     report = Report()
     if args.i18n:
