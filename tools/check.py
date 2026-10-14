@@ -202,8 +202,8 @@ def check_agents(repo, report):
         if name and name != path.stem:
             report.add(rel, 1, "ERROR", f"agent `name: {name}` must match the file name")
         names.add(path.stem)
-        if fm.get("phase") and not re.fullmatch(r"[1-5]", fm["phase"]):
-            report.add(rel, 1, "ERROR", "agent `phase:` must be a number from 1 to 5")
+        if fm.get("phase") and not re.fullmatch(r"[1-5]|around", fm["phase"]):
+            report.add(rel, 1, "ERROR", "agent `phase:` must be a number from 1 to 5 or `around`")
         for skill in as_list(fm.get("skills", "")):
             used_skills.add(skill)
             if not (repo / "skills" / skill / "SKILL.md").is_file():
