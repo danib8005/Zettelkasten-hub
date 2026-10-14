@@ -1,11 +1,14 @@
 #!/usr/bin/env python3
-"""Bundle rules, one procedure and chosen notes into one file (pack.md) for chat tools
-without file access. Standard library only; no AI involved.
+"""Bundle rules, one agent (or one procedure) and chosen notes into one file (pack.md) for chat
+tools without file access. Standard library only; no AI involved.
 
 Usage:
-  python tools/pack.py BUNDLE_DIR -k addition bias --skill answer
-  python tools/pack.py BUNDLE_DIR -f 10_Concepts/a.md 40_Sources/b.md --skill answer -o pack.md
+  python tools/pack.py BUNDLE_DIR -k addition bias --agent answer
+  python tools/pack.py BUNDLE_DIR -k addition bias --skill answer-from-notes
+  python tools/pack.py BUNDLE_DIR -f 10_Concepts/a.md 40_Sources/b.md --skill answer-from-notes -o pack.md
 
+With --agent the file holds: rules (AGENTS.md) → agent file → its skills → perspective → notes →
+the agent's final check again at the end. Notes are then chosen only from the agent's `reads:` folders.
 Notes are chosen by keyword score (title counts triple) or by explicit file list.
 By default notes are copied verbatim. Optional mechanical reductions, never rephrasing:
   --visibility team public   only notes with these visibility values (default: public only;
@@ -25,7 +28,7 @@ NOTE_FOLDERS = ("10_Concepts", "40_Sources", "70_Tools", "00_Inbox")
 
 PREAMBLE = """# Knowledge pack
 
-You are working with the rules, one procedure and a selection of notes below. Follow the rules in AGENTS.md.
+You are working with the rules, one agent or procedure and a selection of notes below. Follow the rules in AGENTS.md.
 Answer only from the notes in this pack. Name the note path for every statement (for example `/10_Concepts/x.md`).
 If the notes do not cover something, say «not in the notes». Do not present general knowledge as a finding.
 """
@@ -33,6 +36,48 @@ If the notes do not cover something, say «not in the notes». Do not present ge
 
 def read(path):
     return Path(path).read_text(encoding="utf-8")
+
+
+def frontmatter(text):
+    """Simple `key: value` frontmatter; `[a, b]` values become lists."""
+    lines = text.splitlines()
+    data = {}
+    if not lines or lines[0].strip() != "---":
+        return data
+    for line in lines[1:]:
+        if line.strip() == "---":
+            break
+        m = re.match(r"^([A-Za-z_][\w-]*):\s*(.*?)\s*$", line)
+        if m:
+            value = m.group(2)
+            if value.startswith("[") and value.endswith("]"):
+                value = [v.strip() for v in value[1:-1].split(",") if v.strip()]
+            data[m.group(1)] = value
+    return data
+
+
+def section(text, title):
+    """The `## title` section of a Markdown text, heading included; empty if missing."""
+    out, inside = [], False
+    for line in text.splitlines():
+        if line.startswith("## "):
+            if inside:
+                break
+            inside = line[3:].strip().lower() == title.lower()
+        if inside:
+            out.append(line)
+    return "\n".join(out).strip()
+
+
+def load_agent(name):
+    path = REPO / "agents" / f"{name}.md"
+    if not path.is_file():
+        raise SystemExit(f"error: agent not found: {name}")
+    text = read(path)
+    fm = frontmatter(text)
+    skills = fm.get("skills") or []
+    folders = [r for r in fm.get("reads") or [] if not r.endswith(".md")]
+    return text, (skills if isinstance(skills, list) else [skills]), folders
 
 
 VISIBILITY_ALIASES = {"öffentlich": "public", "privat": "private"}
@@ -82,8 +127,8 @@ def keep_sections(text, wanted):
     return "\n".join(out)
 
 
-def candidates(bundle):
-    for folder in NOTE_FOLDERS:
+def candidates(bundle, folders=NOTE_FOLDERS):
+    for folder in folders:
         base = bundle / folder
         if base.is_dir():
             yield from sorted(base.rglob("*.md"))
@@ -99,7 +144,7 @@ def allowed(path, visibilities):
     return visibilities is None or visibility_of(read(path)) in visibilities
 
 
-def select(bundle, keywords, files, max_notes, visibilities=None):
+def select(bundle, keywords, files, max_notes, visibilities=None, folders=NOTE_FOLDERS):
     if files:
         chosen = []
         for f in files:
@@ -114,7 +159,7 @@ def select(bundle, keywords, files, max_notes, visibilities=None):
     terms = [t.lower() for k in keywords for t in re.split(r"\W+", k) if len(t) >= 3]
     if not terms:
         raise SystemExit("error: give keywords (-k) or files (-f)")
-    scored = [(score(read(p), terms), p) for p in candidates(bundle) if allowed(p, visibilities)]
+    scored = [(score(read(p), terms), p) for p in candidates(bundle, folders) if allowed(p, visibilities)]
     scored = [s for s in scored if s[0] > 0]
     scored.sort(key=lambda s: (-s[0], str(s[1])))
     return [p for _, p in scored[:max_notes]]
@@ -129,20 +174,34 @@ def render_note(path, strip, sections):
     return text
 
 
-def build(bundle, notes, skill, strip=False, sections=None):
+def skill_text(name):
+    sk = REPO / "skills" / name / "SKILL.md"
+    if not sk.is_file():
+        raise SystemExit(f"error: skill not found: {name}")
+    return read(sk)
+
+
+def build(bundle, notes, skill=None, strip=False, sections=None, agent=None):
     parts = [PREAMBLE, "\n## Rules (AGENTS.md)\n\n", read(REPO / "AGENTS.md")]
+    final_check = ""
+    if agent:
+        text, skills, _ = load_agent(agent)
+        parts += [f"\n\n## Agent: {agent}\n\n", text]
+        for name in skills:
+            parts += [f"\n\n## Procedure: {name}\n\n", skill_text(name)]
+        final_check = section(text, "Final check")
     perspective = bundle / "perspective.md"
     if perspective.is_file():
         parts += ["\n\n## Perspective of this bundle\n\n", read(perspective)]
     if skill:
-        sk = REPO / "skills" / skill / "SKILL.md"
-        if not sk.is_file():
-            raise SystemExit(f"error: skill not found: {skill}")
-        parts += [f"\n\n## Procedure: {skill}\n\n", read(sk)]
+        parts += [f"\n\n## Procedure: {skill}\n\n", skill_text(skill)]
     parts.append("\n\n## Notes\n")
     for p in notes:
         rel = "/" + p.relative_to(bundle).as_posix()
         parts += [f"\n### {rel}\n\n", render_note(p, strip, sections).rstrip(), "\n"]
+    if final_check:
+        parts += [f"\n\n## Before you answer: final check of agent {agent}\n\n",
+                  final_check.split("\n", 1)[-1].strip(), "\n"]
     return "".join(parts)
 
 
@@ -151,7 +210,9 @@ def main(argv=None):
     ap.add_argument("bundle", help="bundle directory")
     ap.add_argument("-k", "--keywords", nargs="*", default=[], help="keywords or a question")
     ap.add_argument("-f", "--files", nargs="*", default=[], help="notes relative to the bundle")
-    ap.add_argument("-s", "--skill", default=None, help="procedure to include (e.g. answer)")
+    who = ap.add_mutually_exclusive_group()
+    who.add_argument("-a", "--agent", default=None, help="agent to include with its skills (e.g. answer)")
+    who.add_argument("-s", "--skill", default=None, help="single procedure to include (e.g. answer-from-notes)")
     ap.add_argument("-n", "--max-notes", type=int, default=6)
     ap.add_argument("--visibility", nargs="*", default=["public"], help="allowed visibility values (default: public)")
     ap.add_argument("--include-private", action="store_true", help="do not filter by visibility")
@@ -163,10 +224,11 @@ def main(argv=None):
     if not bundle.is_dir():
         raise SystemExit(f"error: bundle not found: {bundle}")
     vis = None if args.include_private else {VISIBILITY_ALIASES.get(v.lower(), v.lower()) for v in args.visibility}
-    notes = select(bundle, args.keywords, args.files, args.max_notes, vis)
+    folders = load_agent(args.agent)[2] if args.agent else NOTE_FOLDERS
+    notes = select(bundle, args.keywords, args.files, args.max_notes, vis, folders)
     if not notes:
         raise SystemExit("error: no note matches the keywords (and the visibility filter)")
-    text = build(bundle, notes, args.skill, args.strip_quotes, args.sections)
+    text = build(bundle, notes, args.skill, args.strip_quotes, args.sections, args.agent)
     Path(args.out).write_text(text, encoding="utf-8")
     print(f"{args.out}: {len(text)} characters, {len(notes)} note(s)")
     for p in notes:

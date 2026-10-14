@@ -1,2 +1,6 @@
 _input/
 __pycache__/
+.github/*
+!.github/agents/
+Notes.md
+.zotero-sync.pending.json

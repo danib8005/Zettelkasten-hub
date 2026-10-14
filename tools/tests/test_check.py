@@ -73,6 +73,81 @@ class OkfConformance(unittest.TestCase):
             self.assertIn("OKF", msgs[0])
 
 
+class InboxAndOpenQuestions(unittest.TestCase):
+    def test_inbox_and_open_question_notes_need_review_status(self):
+        with tempfile.TemporaryDirectory() as d:
+            b = Path(d)
+            for folder in ("00_Inbox", "50_Open-Questions"):
+                (b / folder).mkdir()
+                (b / folder / "x.md").write_text("---\ntype: Capture\n---\n# X\n", encoding="utf-8")
+            msgs = [m for _, _, _, m in run(b).items]
+            self.assertEqual(msgs.count("missing review status"), 2)
+
+
+AGENT = """---
+type: Agent
+name: {name}
+description: Test agent.
+phase: 1
+skills: [{skills}]
+reads: [00_Inbox, perspective.md]
+writes: [{writes}]
+---
+# Agent
+{sections}
+"""
+SECTIONS = "\n".join(f"## {s}\ntext\n" for s in check.AGENT_SECTIONS)
+
+
+class AgentSystem(unittest.TestCase):
+    def setUp(self):
+        self.tmp = Path(tempfile.mkdtemp())
+        for skill in ("used", "unused"):
+            (self.tmp / "skills" / skill).mkdir(parents=True)
+            (self.tmp / "skills" / skill / "SKILL.md").write_text("---\nname: x\n---\n", encoding="utf-8")
+        (self.tmp / "agents").mkdir()
+        (self.tmp / ".github" / "agents").mkdir(parents=True)
+        (self.tmp / ".claude" / "agents").mkdir(parents=True)
+
+    def tearDown(self):
+        shutil.rmtree(self.tmp)
+
+    def agent(self, name="good", skills="used", writes="00_Inbox", sections=SECTIONS, adapters=True):
+        (self.tmp / "agents" / f"{name}.md").write_text(
+            AGENT.format(name=name, skills=skills, writes=writes, sections=sections), encoding="utf-8")
+        if adapters:
+            (self.tmp / ".github" / "agents" / f"{name}.agent.md").write_text("x", encoding="utf-8")
+            (self.tmp / ".claude" / "agents" / f"{name}.md").write_text("x", encoding="utf-8")
+
+    def findings(self):
+        return run(self.tmp, i18n=True).items
+
+    def test_repository_is_clean(self):
+        self.assertEqual(run(ROOT, i18n=True).items, [])
+
+    def test_valid_agent_only_warns_about_unused_skill(self):
+        self.agent()
+        items = self.findings()
+        self.assertEqual([(i[2], i[3]) for i in items], [("WARN", "skill is not used by any agent")])
+        self.assertIn("unused", items[0][0])
+
+    def test_broken_agent_is_reported(self):
+        self.agent(skills="used, missing-skill", writes="99_Nowhere", sections="## Role\n", adapters=False)
+        (self.tmp / ".claude" / "agents" / "orphan.md").write_text("x", encoding="utf-8")
+        msgs = " | ".join(m for _, _, _, m in self.findings())
+        for expected in ["skill `missing-skill` not found", "not a bundle folder",
+                         "section `## Final check` missing", "adapter missing for agent `good`",
+                         "adapter without an agent"]:
+            self.assertIn(expected, msgs)
+
+    def test_missing_frontmatter_field_and_name_mismatch(self):
+        (self.tmp / "agents" / "bad.md").write_text(
+            "---\ntype: Agent\nname: other\n---\n" + SECTIONS, encoding="utf-8")
+        msgs = " | ".join(m for _, _, _, m in self.findings())
+        self.assertIn("needs `skills:`", msgs)
+        self.assertIn("must match the file name", msgs)
+
+
 class I18n(unittest.TestCase):
     def setUp(self):
         self.tmp = Path(tempfile.mkdtemp())

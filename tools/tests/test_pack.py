@@ -17,7 +17,7 @@ class Pack(unittest.TestCase):
 
     def test_notes_verbatim_with_path_headings(self):
         notes = pack.select(EX, [], ["/10_Concepts/addition-bias-subtraction.md"], 1)
-        text = pack.build(EX, notes, "answer")
+        text = pack.build(EX, notes, "answer-from-notes")
         self.assertIn("### /10_Concepts/addition-bias-subtraction.md", text)
         self.assertIn(notes[0].read_text(encoding="utf-8").rstrip(), text)
         self.assertIn("AGENTS.md", text)
@@ -35,6 +35,42 @@ class Pack(unittest.TestCase):
     def test_missing_file_exits(self):
         with self.assertRaises(SystemExit):
             pack.select(EX, [], ["10_Concepts/nope.md"], 1)
+
+
+class AgentPack(unittest.TestCase):
+    def test_agent_pack_order_and_final_check_at_end(self):
+        notes = pack.select(EX, [], ["/10_Concepts/addition-bias-subtraction.md"], 1)
+        text = pack.build(EX, notes, agent="answer")
+        order = [text.index(s) for s in ("## Rules (AGENTS.md)", "## Agent: answer",
+                                          "## Procedure: answer-from-notes",
+                                          "## Procedure: record-open-question",
+                                          "## Perspective of this bundle", "## Notes",
+                                          "## Before you answer: final check of agent answer")]
+        self.assertEqual(order, sorted(order))
+        self.assertTrue(text.rstrip().endswith("never shared or exported."))
+
+    def test_agent_reads_limit_the_note_folders(self):
+        answer_folders = pack.load_agent("answer")[2]
+        capture_folders = pack.load_agent("capture")[2]
+        self.assertIn("30_Syntheses", answer_folders)
+        synth = [p.name for p in pack.select(EX, ["sickness"], [], 9, None, answer_folders)]
+        self.assertIn("addition-bias-vs-addition-sickness.md", synth)
+        none = [p.name for p in pack.select(EX, ["sickness"], [], 9, None, capture_folders)]
+        self.assertNotIn("addition-bias-vs-addition-sickness.md", none)
+
+    def test_cli_agent_and_skill_are_exclusive(self):
+        with self.assertRaises(SystemExit):
+            pack.main([str(EX), "-k", "friction", "-a", "answer", "-s", "answer-from-notes"])
+
+    def test_unknown_agent_exits(self):
+        with self.assertRaises(SystemExit):
+            pack.load_agent("nobody")
+
+    def test_cli_with_agent(self):
+        with tempfile.TemporaryDirectory() as d:
+            out = Path(d) / "pack.md"
+            self.assertEqual(pack.main([str(EX), "-k", "friction", "-a", "answer", "-o", str(out)]), 0)
+            self.assertIn("## Agent: answer", out.read_text(encoding="utf-8"))
 
 
 class Filters(unittest.TestCase):
