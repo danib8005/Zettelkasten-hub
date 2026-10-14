@@ -34,7 +34,7 @@ Templates: `templates/<name>.md` (single source). The type is set in the frontma
 - Language: set in `perspective.md` (`language:`). Notes keep the language of their source; you answer in the language of the question.
 - Annotation markers, in the bundle's language: your own note (`📝 Your note:` / `📝 Deine Notiz:`), synthesis (`📝 Synthesis:`), agent addition (`📝 Agent:`). Never mix them.
 - Review status at the end of each note: created, last review, ✓ current / ⚠️ outdated / 🔄 under revision. Initials per author; each agent signs with its own tag (`agent:capture`, `agent:distill`, …).
-- People: source notes use real names; project and reflection notes use a role or an agreed abbreviation.
+- People: source notes use real names; project and reflection notes use a role or an agreed abbreviation. If you pseudonymise, keep the key table outside any exportable note and never export it. Pseudonymisation is not anonymisation.
 
 ## Quality principles (all phases)
 1. **Answer with sources.** Every statement names its origin; name gaps; mark interpretation and hypotheses as such.
