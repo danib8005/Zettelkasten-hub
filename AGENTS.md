@@ -17,6 +17,7 @@ Capture → Distill → Connect → Answer → Maintain → back to Capture. The
 | 3 Connect | `agents/connect.md` | concepts, frameworks, syntheses, tools; links with reasons | `10_Concepts`, `20_Frameworks`, `30_Syntheses`, `70_Tools` |
 | 4 Answer | `agents/answer.md` | answers from the notes, lists gaps | `50_Open-Questions` (after consent) |
 | 5 Maintain | `agents/maintain.md` | checks structure and review status, turns gaps into next inputs | fixes after confirmation |
+Two optional agents work beside the loop and feed it: `agents/reflect.md` turns inward (challenges a position, brings processed notes back, secures the owner's own thinking) and `agents/explore.md` turns outward (maps where the notes end, finds connections as hypotheses). Explore hands new sources and questions to Capture; Reflect hands the owner's thoughts to Capture and rework to Connect.
 An agent file names its role, what it reads and writes, its skills (`skills/<name>/SKILL.md`, step-by-step procedures) and its handoff. Without agent support, read the agent file of the phase you work in.
 Format: plain Markdown with YAML frontmatter, aligned with the Open Knowledge Format (see [docs/standards.md](docs/standards.md)). The owner's perspective (topics, anchors, authors, language) is in `perspective.md`; read it for substantive work, not for plain maintenance.
 

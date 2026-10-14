@@ -2,7 +2,7 @@
 type: Agent
 name: [phase name, lowercase: capture / distill / connect / answer / maintain]
 description: [One sentence: what this agent does and when to use it.]
-phase: [1–5]
+phase: [1–5, or `around` for agents beside the loop]
 skills: [skill-a, skill-b]
 reads: [folders or files, e.g. 00_Inbox, 40_Sources, perspective.md]
 writes: [folders, e.g. 40_Sources; empty list if it writes nothing]

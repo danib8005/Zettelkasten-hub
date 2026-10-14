@@ -34,6 +34,8 @@
     "agents/distill.md",
     "agents/connect.md",
     "agents/answer.md",
-    "agents/maintain.md"
+    "agents/maintain.md",
+    "agents/reflect.md",
+    "agents/explore.md"
   ]
 }

@@ -148,6 +148,22 @@ class AgentSystem(unittest.TestCase):
         self.assertIn("must match the file name", msgs)
 
 
+class RepoAgents(unittest.TestCase):
+    def test_repo_agents_including_around_phase_pass(self):
+        report = check.Report()
+        check.check_agents(Path(check.__file__).resolve().parents[1], report)
+        self.assertEqual([m for _, _, s, m in report.items if s == "ERROR"], [])
+
+    def test_bad_phase_is_rejected(self):
+        with tempfile.TemporaryDirectory() as d:
+            repo = Path(d)
+            (repo / "agents").mkdir()
+            (repo / "agents" / "x.md").write_text("---\ntype: Agent\nname: x\ndescription: d\nphase: sideways\nskills: [s]\nreads: [a]\nwrites: []\n---\n# X\n", encoding="utf-8")
+            report = check.Report()
+            check.check_agents(repo, report)
+            self.assertTrue(any("phase" in m for _, _, _, m in report.items))
+
+
 class I18n(unittest.TestCase):
     def setUp(self):
         self.tmp = Path(tempfile.mkdtemp())
