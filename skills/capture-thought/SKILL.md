@@ -14,6 +14,9 @@ Follow `AGENTS.md`. Tool-neutral: use whatever file access you have; without it,
 4. **Save directly.** No draft needed for a thought. File name: `10_Concepts/<short-title>.md`. Review status: 💭 idea, signed with your tag.
 5. **Report.** What was saved; suggest Connect if the thought could become a concept or join a synthesis.
 
+## Optional: reading tags
+If the owner marks material while reading, map the tags: `#i` own thought → thought note or `📝 Your note:` · `#t` dig deeper → question · `#p` practice → practice reflection · `#do` action → to-do · `#vgl` comparison → possible link (resonance or contrast). Untagged material stays raw.
+
 ## Final check
 - The owner's wording is kept; your additions are marked `📝 Agent:`.
 - Nothing presented as a finding that is only an idea.
