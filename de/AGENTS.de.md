@@ -40,7 +40,7 @@ Vorlagen in `templates/<name>.md`; der Typ steht im Frontmatter als `type:` (fre
 - Sprache: laut `perspective.md` (`language:`); Notizen bleiben in der Sprache der Quelle; Antworten in der Sprache der Frage.
 - Annotationen: `📝 Deine Notiz:`, `📝 Synthese:`, `📝 Agent:`; nie vermischen.
 - Review-Status am Ende jeder Notiz: erstellt, letztes Review, ✓ aktuell / ⚠️ veraltet / 🔄 in Überarbeitung. Kürzel pro Person; jeder Agent zeichnet mit eigenem Tag (`agent:capture`, `agent:distill`, …).
-- Personen: Source Notes mit echten Namen; Projekt- und Reflexionsnotizen mit Rolle oder vereinbartem Kürzel.
+- Personen: Source Notes mit echten Namen; Projekt- und Reflexionsnotizen mit Rolle oder vereinbartem Kürzel. Bei Pseudonymen die Schlüsseltabelle ausserhalb jeder exportierbaren Notiz halten und nie exportieren. Pseudonymisierung ist keine Anonymisierung.
 
 ## Qualitätsprinzipien (alle Phasen)
 1. **Belegt antworten:** jede Aussage mit Herkunft; Lücken benennen; Deutung und Hypothesen kennzeichnen.

@@ -8,7 +8,7 @@ description: Turn one book, article or talk into a source note (lightweight by d
 Follow `AGENTS.md` and your agent file. Tool-neutral: read the source the person provides (file, text, transcript, their own notes on it).
 
 ## Procedure
-1. **Choose the template.** `templates/source-lightweight.md` by default; `templates/source-full.md` only for dense books and reports. One source note per book, article or author series; a second one only for a real theoretical break.
+1. **Choose the template.** `templates/source-lightweight.md` by default; `templates/source-full.md` only for dense books and reports. One source note per book, article or author series; a second one only for a real theoretical break. Test: can I cite position A without implying B? If not, it is one note.
 2. **Read the material.** Use only what is in the source or in the person's notes on it. If parts are missing (no access to the full text), say which parts the note is based on.
 3. **Write the core thesis** in one or two sentences.
 4. **Pick the key statements** that carry the argument; organise by theme, not by chapter. Paraphrase; quote briefly, in the original language, with location when available. Never invent a quote, a location or a bibliographic detail; leave a gap marked `[?]` instead.

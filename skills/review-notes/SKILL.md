@@ -8,6 +8,7 @@ description: Review notes for currency and quality (review status, outdated cont
 Follow `AGENTS.md` and your agent file. Tool-neutral.
 
 ## Procedure
+0. **Trigger.** A new source note makes every concept and synthesis that links to its topic a review candidate: propose them as ⚠️ outdated until reviewed.
 1. **Choose the scope.** One of: notes affected by a new or changed source (the handoff from Distill or Connect); notes marked ⚠️ outdated or 🔄 under revision; notes whose last review is old; one note the person names.
 2. **Read each note against its sources.** Does it still say what its sources say? Does a newer source in the bundle contradict or extend it? Name the note paths that show it.
 3. **Check quality** against its template and `AGENTS.md`: core statement first; origin of statements; no copied passages; links with reasons; source notes link to each other only on direct relation; one definition per concept (no redefinition elsewhere).
