@@ -22,6 +22,7 @@ Capture → Distill → Connect → Answer → Maintain → zurück zu Capture. 
 | 3 Connect | `agents/connect.md` | Konzepte, Frameworks, Synthesen, Tools; Links mit Begründung | `10_Concepts`, `20_Frameworks`, `30_Syntheses`, `70_Tools` |
 | 4 Answer | `agents/answer.md` | antwortet aus den Notizen, nennt Lücken | `50_Open-Questions` (nach Zustimmung) |
 | 5 Maintain | `agents/maintain.md` | prüft Struktur und Review-Status, macht Lücken zu nächsten Eingaben | Korrekturen nach Bestätigung |
+Zwei optionale Agenten arbeiten neben der Schleife und speisen sie: `agents/reflect.md` schaut nach innen (prüft eine Position, bringt verarbeitete Notizen zurück, sichert das eigene Denken der Person) und `agents/explore.md` schaut nach aussen (zeigt, wo die Notizen enden, findet Verbindungen als Hypothesen). Explore gibt neue Quellen und Fragen an Capture; Reflect gibt die Gedanken der Person an Capture und Überarbeitungen an Connect.
 Eine Agenten-Datei nennt Rolle, was gelesen und geschrieben wird, die Skills (`skills/<name>/SKILL.md`, Schritt-für-Schritt-Verfahren) und die Übergabe. Ohne Agenten-Unterstützung: die Agenten-Datei der Phase lesen, in der man arbeitet.
 Format: Markdown mit YAML-Frontmatter nach dem Open Knowledge Format (siehe [de/standards.md](standards.md)). Die Perspektive der Besitzerin oder des Besitzers (Themen, Ankerpunkte, Autorinnen, Sprache) steht in `perspective.md`; für inhaltliche Arbeit lesen, nicht für reine Wartung.
 

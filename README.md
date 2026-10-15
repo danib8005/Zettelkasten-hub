@@ -23,6 +23,8 @@ flowchart LR
 | 3 Connect | [`connect`](agents/connect.md) | concepts, frameworks, syntheses and tools, linked with reasons | `10_Concepts`, `20_Frameworks`, `30_Syntheses`, `70_Tools` | find-existing, draft-first, write-concept, synthesize, write-tool |
 | 4 Answer | [`answer`](agents/answer.md) | answers from the notes only, origin per statement, gap list | `50_Open-Questions` (only with your consent) | answer-from-notes, record-open-question |
 | 5 Maintain | [`maintain`](agents/maintain.md) | runs the check, reviews notes, turns gaps into the next inputs | fixes only, after confirmation | run-check, review-notes, triage-open-links |
+| beside the loop | [`reflect`](agents/reflect.md) | turns inward: challenges a position, revisits processed notes, secures your own thinking | thoughts in `10_Concepts`, `50_Open-Questions` (after consent) | challenge-position, revisit-notes, draft-first |
+| beside the loop | [`explore`](agents/explore.md) | turns outward: maps where the notes end, finds connections as hypotheses | `50_Open-Questions` (after consent) | map-frontier, discover-connections, record-open-question |
 
 You pick the agent; each one ends by suggesting the next. Writing agents also suggest Maintain after saving. Each agent keeps its context small: the shared rules, its own rules and its skills, with the critical rules at the start and repeated at the end.
 

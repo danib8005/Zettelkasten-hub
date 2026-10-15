@@ -28,6 +28,8 @@ flowchart LR
 | 3 Connect | [`connect`](agents/connect.md) | Konzepte, Frameworks, Synthesen und Tools, mit begründeten Links | `10_Concepts`, `20_Frameworks`, `30_Syntheses`, `70_Tools` | find-existing, draft-first, write-concept, synthesize, write-tool |
 | 4 Answer | [`answer`](agents/answer.md) | antwortet nur aus den Notizen, Herkunft pro Aussage, Lückenliste | `50_Open-Questions` (nur mit deiner Zustimmung) | answer-from-notes, record-open-question |
 | 5 Maintain | [`maintain`](agents/maintain.md) | führt den Check aus, prüft Notizen, macht Lücken zu nächsten Eingaben | nur Korrekturen, nach Bestätigung | run-check, review-notes, triage-open-links |
+| neben der Schleife | [`reflect`](agents/reflect.md) | schaut nach innen: prüft eine Position, bringt verarbeitete Notizen zurück, sichert dein eigenes Denken | Gedanken in `10_Concepts`, `50_Open-Questions` (nach Zustimmung) | challenge-position, revisit-notes, draft-first |
+| neben der Schleife | [`explore`](agents/explore.md) | schaut nach aussen: zeigt, wo die Notizen enden, findet Verbindungen als Hypothesen | `50_Open-Questions` (nach Zustimmung) | map-frontier, discover-connections, record-open-question |
 
 Du wählst den Agenten; jeder schlägt am Ende den nächsten vor. Schreibende Agenten schlagen nach dem Speichern zudem Maintain vor. Jeder Agent hält seinen Kontext klein: gemeinsame Regeln, eigene Regeln und seine Skills, die kritischen Regeln am Anfang und am Ende wiederholt.
 
