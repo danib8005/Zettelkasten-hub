@@ -131,6 +131,7 @@ def resolve(target, by_key, mapping=None):
     return "missing", None
 
 
+NOT_TARGETS = {"90_Originals", "95_System", "99_Raw-Data"}  # originals, system copies and archives are no link targets
 SOURCE_LIKE = re.compile(r"^[a-z][a-z-]*-\d{4}(-|$)")
 
 
@@ -203,7 +204,8 @@ def run(bundle, apply=False, missing_to=None, folders=None, map_file=None):
     config = check.load_config()
     folders = folders or config["note_folders"]
     # targets are looked up in every numbered top-level folder (60_Own-Work, 65_Consulting, ...), links are only rewritten in `folders`
-    all_folders = sorted(d.name for d in bundle.iterdir() if d.is_dir() and re.match(r"^\d\d_", d.name))
+    all_folders = sorted(d.name for d in bundle.iterdir()
+                         if d.is_dir() and re.match(r"^\d\d_", d.name) and d.name not in NOT_TARGETS)
     by_key, titles = build_index(bundle, sorted(set(folders) | set(all_folders)))
     mapping = load_map(map_file, by_key, titles) if map_file else None
     stats = {"outside": Counter(), "converted": 0, "to_do": 0, "missing": Counter(), "ambiguous": {},
