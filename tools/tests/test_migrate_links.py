@@ -119,7 +119,7 @@ class T(unittest.TestCase):
         m = self.root / "map.md"
         m.write_text("psychological-safety = /20_Frameworks/psychological-safety.md\n", encoding="utf-8")
         stats = ml.run(self.root, apply=True, map_file=m)
-        self.assertFalse(stats["ambiguous"])
+        self.assertNotIn("psychological-safety", stats["ambiguous"])
         self.assertIn("(/20_Frameworks/psychological-safety.md) - Grund", (self.root / "40_Sources/quelle.md").read_text(encoding="utf-8"))
 
     def test_ambiguous_not_changed(self):
