@@ -73,6 +73,20 @@ class OkfConformance(unittest.TestCase):
             self.assertIn("OKF", msgs[0])
 
 
+class WikilinksInCode(unittest.TestCase):
+    def test_wikilink_in_code_is_not_an_error_but_real_one_is(self):
+        with tempfile.TemporaryDirectory() as d:
+            b = Path(d)
+            (b / "10_Concepts").mkdir()
+            body = ("---\ntype: Concept\n---\n# T\n"
+                    "Documented as `[[a]]` in text.\n```\n[[b]]\n```\n"
+                    "Real [[c]] link.\n\n- Created: 2026-10-17\n- Last review: 2026-10-17\n- Review status: current\n")
+            (b / "10_Concepts" / "t.md").write_text(body, encoding="utf-8")
+            wiki = [i for i in run(b).items if "wikilink" in i[3]]
+            self.assertEqual(len(wiki), 1)
+            self.assertEqual(wiki[0][1], 9)
+
+
 class InboxAndOpenQuestions(unittest.TestCase):
     def test_inbox_and_open_question_notes_need_review_status(self):
         with tempfile.TemporaryDirectory() as d:

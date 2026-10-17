@@ -110,12 +110,16 @@ def check_note(path, bundle, report, config, example):
 
     section = ""
     open_allowed = set(config.get("example_open_links", []))
+    in_fence = False
     for n, line in enumerate(lines, 1):
         if n <= body_start:
             continue
+        if re.match(r"^\s*(```|~~~)", line):
+            in_fence = not in_fence
         if line.startswith("#"):
             section = line.lstrip("#").strip().lower()
-        if WIKI_RE.search(line):
+        # wikilinks inside code (fenced or inline) are documentation, not links
+        if not in_fence and WIKI_RE.search(re.sub(r"`[^`\n]*`", "", line)):
             report.add(rel, n, "ERROR", "wikilink; use [Title](/folder/file.md)")
         for _, target in LINK_RE.findall(line):
             if re.match(r"^(https?:|mailto:|#)", target):
