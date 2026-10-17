@@ -113,6 +113,15 @@ class T(unittest.TestCase):
         self.assertIn("(/10_Concepts/psychological-safety.md)", (self.root / "60_Own-Work/t.md").read_text(encoding="utf-8"))
         self.assertIn("[[fehlt-noch]]", (self.root / "40_Sources/quelle.md").read_text(encoding="utf-8"))
 
+    def test_map_with_full_path_settles_ambiguity(self):
+        (self.root / "20_Frameworks").mkdir()
+        (self.root / "20_Frameworks/psychological-safety.md").write_text(A, encoding="utf-8")
+        m = self.root / "map.md"
+        m.write_text("psychological-safety = /20_Frameworks/psychological-safety.md\n", encoding="utf-8")
+        stats = ml.run(self.root, apply=True, map_file=m)
+        self.assertFalse(stats["ambiguous"])
+        self.assertIn("(/20_Frameworks/psychological-safety.md) - Grund", (self.root / "40_Sources/quelle.md").read_text(encoding="utf-8"))
+
     def test_ambiguous_not_changed(self):
         (self.root / "20_Frameworks").mkdir()
         (self.root / "20_Frameworks/psychological-safety.md").write_text(A, encoding="utf-8")
