@@ -48,7 +48,7 @@ Vorlagen in `templates/<name>.md`; der Typ steht im Frontmatter als `type:` (fre
 Die Prinzipien 3–5 gelten für einzelne Phasen und stehen in den Agenten-Dateien.
 
 ## Werkzeuge
-`tools/check.py` prüft Struktur und Formatkonformität. `tools/pack.py` bündelt diese Regeln, einen Agenten (oder einen Skill) und ausgewählte Notizen in eine Datei für Chat-Werkzeuge ohne Dateizugriff. `tools/catalog.py` erstellt einen Katalog der Source Notes.
+`tools/check.py` prüft Struktur und Formatkonformität. `tools/pack.py` bündelt diese Regeln, einen Agenten (oder einen Skill) und ausgewählte Notizen in eine Datei für Chat-Werkzeuge ohne Dateizugriff. `tools/catalog.py` erstellt einen Katalog der Source Notes. `tools/migrate_links.py` wandelt Wikilinks in Standard-Links um (Standard: Trockenlauf).
 
 ## Vertraulichkeit (zuletzt lesen)
 - Notizen ohne `visibility: öffentlich` werden nie geteilt oder exportiert.

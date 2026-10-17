@@ -43,7 +43,7 @@ Templates: `templates/<name>.md` (single source). The type is set in the frontma
 Principles 3–5 apply to single phases and are in the agent files.
 
 ## Tools
-`tools/check.py` checks structure and format conformance. `tools/pack.py` bundles these rules, one agent (or one skill) and chosen notes into one file for chat tools without file access. `tools/catalog.py` builds a catalog of source notes.
+`tools/check.py` checks structure and format conformance. `tools/pack.py` bundles these rules, one agent (or one skill) and chosen notes into one file for chat tools without file access. `tools/catalog.py` builds a catalog of source notes. `tools/migrate_links.py` converts wikilinks to standard links (dry run by default).
 
 ## Confidentiality (read last)
 - Notes without `visibility: public` are never shared or exported.

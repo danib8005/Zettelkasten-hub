@@ -42,7 +42,7 @@ Du wählst den Agenten; jeder schlägt am Ende den nächsten vor. Schreibende Ag
 | Regeln | [`AGENTS.md`](AGENTS.md): der gemeinsame Kern | Agenten, die Repo-Dateien lesen |
 | Agenten | [`agents/`](agents/): eine Rolle pro Phase, dazu schlanke Adapter in `.github/agents/` (GitHub Copilot) und `.claude/agents/` (Claude Code) | jeder Agent: «folge agents/answer.md» |
 | Verfahren | [`skills/`](skills/): vierzehn `SKILL.md`-Dateien als normale Markdown-Anleitung | von den Agenten genutzt; jeder Agent kann einem folgen |
-| Prüfung und Bündeln | [`tools/check.py`](tools/check.py), [`tools/pack.py`](tools/pack.py), [`tools/catalog.py`](tools/catalog.py), nur Python-Standardbibliothek | von Hand, in CI |
+| Prüfung und Bündeln | [`tools/check.py`](tools/check.py), [`tools/pack.py`](tools/pack.py), [`tools/catalog.py`](tools/catalog.py), [`tools/migrate_links.py`](tools/migrate_links.py), nur Python-Standardbibliothek | von Hand, in CI |
 | Zotero-Markierungen (optional) | [`tools/zotero_highlights.py`](tools/zotero_highlights.py): liest Markierungen aus einem laufenden Zotero (lesende lokale API) | der Agent Capture, nach Rückfrage; weglassen, wenn du Zotero nicht nutzt |
 
 ## Gebaut auf Standards
