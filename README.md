@@ -37,7 +37,7 @@ You pick the agent; each one ends by suggesting the next. Writing agents also su
 | Rules | [`AGENTS.md`](AGENTS.md): the shared core | agents that read repository files |
 | Agents | [`agents/`](agents/): one role per phase, plus thin adapters in `.github/agents/` (GitHub Copilot) and `.claude/agents/` (Claude Code) | any agent: "follow agents/answer.md" |
 | Procedures | [`skills/`](skills/): fourteen `SKILL.md` files in plain Markdown | used by the agents; any agent can follow one |
-| Checks and bundling | [`tools/check.py`](tools/check.py), [`tools/pack.py`](tools/pack.py), [`tools/catalog.py`](tools/catalog.py), Python standard library only | by hand, in CI |
+| Checks and bundling | [`tools/check.py`](tools/check.py), [`tools/pack.py`](tools/pack.py), [`tools/catalog.py`](tools/catalog.py), [`tools/migrate_links.py`](tools/migrate_links.py), Python standard library only | by hand, in CI |
 | Zotero highlights (optional) | [`tools/zotero_highlights.py`](tools/zotero_highlights.py): reads highlights from a running Zotero (read-only local API) | the Capture agent, after asking; skip it if you do not use Zotero |
 
 ## Built on standards
