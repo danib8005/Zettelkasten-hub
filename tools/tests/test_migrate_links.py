@@ -88,6 +88,16 @@ class T(unittest.TestCase):
         with self.assertRaises(ValueError):
             ml.run(self.root, map_file=m)
 
+    def test_folder_qualified_and_outside_links(self):
+        (self.root / "40_Sources/q4.md").write_text(
+            "# Q4\n- [[70_Tools/neues-tool]] x\n- [[65_Consulting/projekt]] y\n- [[90_Originals/a/b|b]] z\n", encoding="utf-8")
+        stats = ml.run(self.root, apply=True, missing_to="auto")
+        text = (self.root / "40_Sources/q4.md").read_text(encoding="utf-8")
+        self.assertIn("[neues-tool](/70_Tools/neues-tool.md)", text)
+        self.assertIn("[[65_Consulting/projekt]]", text)
+        self.assertIn("[[90_Originals/a/b|b]]", text)
+        self.assertEqual(sum(stats["outside"].values()), 2)
+
     def test_ambiguous_not_changed(self):
         (self.root / "20_Frameworks").mkdir()
         (self.root / "20_Frameworks/psychological-safety.md").write_text(A, encoding="utf-8")

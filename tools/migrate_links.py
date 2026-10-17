@@ -133,12 +133,14 @@ SOURCE_LIKE = re.compile(r"^[a-z][a-z-]*-\d{4}(-|$)")
 
 def todo_folder(name, missing_to):
     """Folder for a link to a note that does not exist yet."""
+    if "/" in name.strip():  # [[70_Tools/name]]: keep the folder the author wrote
+        return name.strip().rsplit("/", 1)[0].strip("/")
     if missing_to != "auto":
         return missing_to.strip("/")
     return "40_Sources" if SOURCE_LIKE.match(slug(name)) else "10_Concepts"
 
 
-def convert_text(text, rel_file, by_key, titles, stats, missing_to=None, mapping=None):
+def convert_text(text, rel_file, by_key, titles, stats, missing_to=None, mapping=None, folders=()):
     """Convert wikilinks in text. Returns new text. Updates stats."""
     out, in_fence = [], False
     for n, line in enumerate(text.split("\n"), 1):
@@ -169,6 +171,9 @@ def convert_text(text, rel_file, by_key, titles, stats, missing_to=None, mapping
                 return m.group(0)
             stats["missing"][target.strip()] += 1
             stats["missing_at"].append((rel_file, n, target.strip()))
+            if "/" in target.strip() and target.strip().split("/", 1)[0] not in folders:
+                stats["outside"][target.strip()] += 1  # points out of the bundle (originals, consulting): leave
+                return m.group(0)
             if missing_to:
                 name = target.strip()
                 stats["to_do"] += 1
@@ -195,7 +200,7 @@ def run(bundle, apply=False, missing_to=None, folders=None, map_file=None):
     folders = folders or config["note_folders"]
     by_key, titles = build_index(bundle, folders)
     mapping = load_map(map_file, by_key) if map_file else None
-    stats = {"converted": 0, "to_do": 0, "missing": Counter(), "ambiguous": {},
+    stats = {"outside": Counter(), "converted": 0, "to_do": 0, "missing": Counter(), "ambiguous": {},
              "missing_at": [], "ambiguous_at": [], "files": 0}
     changed = []
     for folder in folders:
@@ -207,7 +212,7 @@ def run(bundle, apply=False, missing_to=None, folders=None, map_file=None):
             if "[[" not in old:
                 continue
             rel = path.relative_to(bundle).as_posix()
-            new = convert_text(old, rel, by_key, titles, stats, missing_to, mapping)
+            new = convert_text(old, rel, by_key, titles, stats, missing_to, mapping, folders)
             if new != old:
                 changed.append((path, new))
     stats["files"] = len(changed)
@@ -230,7 +235,11 @@ def render(stats, applied):
              f"- Links to missing notes turned into to-do links: {stats['to_do']}",
              f"- Links to missing notes, left as wikilinks: {sum(stats['missing'].values()) - stats['to_do']}"
              f" ({len(stats['missing'])} distinct names)",
-             f"- Ambiguous names (left unchanged): {len(stats['ambiguous'])}", ""]
+             f"- Ambiguous names (left unchanged): {len(stats['ambiguous'])}",
+             f"- Links out of the bundle (left as wikilinks): {sum(stats['outside'].values())}", ""]
+    if stats["outside"]:
+        lines += ["## Out of the bundle (not converted)", ""]
+        lines += [f"- `{n}` ({c}x)" for n, c in stats["outside"].most_common()] + [""]
     if stats["ambiguous"]:
         lines += ["## Ambiguous", ""]
         for name, hits in sorted(stats["ambiguous"].items()):
