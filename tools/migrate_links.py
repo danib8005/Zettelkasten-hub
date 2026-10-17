@@ -177,7 +177,8 @@ def convert_text(text, rel_file, by_key, titles, stats, missing_to=None, mapping
             if missing_to:
                 name = target.strip()
                 stats["to_do"] += 1
-                return f"[{label or name}](/{todo_folder(name, missing_to)}/{slug(name)}.md)"
+                base = name.rsplit("/", 1)[-1]
+                return f"[{label or base}](/{todo_folder(name, missing_to)}/{slug(base)}.md)"
             return m.group(0)
 
         new = WIKI.sub(repl, masked)
