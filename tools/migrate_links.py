@@ -11,10 +11,13 @@ Title is the first "# " heading of the target note. The target is found by file 
 slugified spelling (umlauts ae/oe/ue, lowercase, hyphens) or by `aliases:`.
 Not changed, only reported: links to notes that do not exist yet, and names that match several notes.
 With --missing-to FOLDER, links to missing notes become [name](/FOLDER/name.md): allowed as a to-do list.
+--missing-to auto picks the folder per name: names like lastname-2015-title go to 40_Sources, all others to 10_Concepts.
+The report lists, for each missing name, a very similar existing note (spelling variant), never applied automatically.
 Wikilinks inside fenced code blocks and inline code are left alone.
 --apply refuses to run on a git working tree with uncommitted changes (use --allow-dirty to override).
 """
 import argparse
+import difflib
 import re
 import subprocess
 import sys
@@ -100,6 +103,16 @@ def resolve(target, by_key):
     return "missing", None
 
 
+SOURCE_LIKE = re.compile(r"^[a-z][a-z-]*-\d{4}(-|$)")
+
+
+def todo_folder(name, missing_to):
+    """Folder for a link to a note that does not exist yet."""
+    if missing_to != "auto":
+        return missing_to.strip("/")
+    return "40_Sources" if SOURCE_LIKE.match(slug(name)) else "10_Concepts"
+
+
 def convert_text(text, rel_file, by_key, titles, stats, missing_to=None):
     """Convert wikilinks in text. Returns new text. Updates stats."""
     out, in_fence = [], False
@@ -134,7 +147,7 @@ def convert_text(text, rel_file, by_key, titles, stats, missing_to=None):
             if missing_to:
                 name = target.strip()
                 stats["to_do"] += 1
-                return f"[{label or name}](/{missing_to.strip('/')}/{slug(name)}.md)"
+                return f"[{label or name}](/{todo_folder(name, missing_to)}/{slug(name)}.md)"
             return m.group(0)
 
         new = WIKI.sub(repl, masked)
@@ -172,6 +185,12 @@ def run(bundle, apply=False, missing_to=None, folders=None):
             if new != old:
                 changed.append((path, new))
     stats["files"] = len(changed)
+    stems = sorted({Path(r).stem for r in titles})
+    stats["similar"] = {}
+    for name in stats["missing"]:
+        close = difflib.get_close_matches(slug(name), stems, n=1, cutoff=0.85)
+        if close:
+            stats["similar"][name] = close[0]
     if apply:
         for path, new in changed:
             path.write_text(new, encoding="utf-8")
@@ -194,7 +213,8 @@ def render(stats, applied):
     if stats["missing"]:
         lines += ["## Missing targets (most referenced first)", ""]
         for name, count in stats["missing"].most_common():
-            lines.append(f"- `{name}` ({count}x)")
+            hint = stats.get("similar", {}).get(name)
+            lines.append(f"- `{name}` ({count}x)" + (f" — similar existing note: `{hint}`" if hint else ""))
         lines.append("")
     return "\n".join(lines)
 
@@ -204,7 +224,8 @@ def main(argv=None):
     ap.add_argument("bundle", help="bundle directory")
     ap.add_argument("--apply", action="store_true", help="write changes (default: dry run)")
     ap.add_argument("--allow-dirty", action="store_true", help="allow --apply with uncommitted git changes")
-    ap.add_argument("--missing-to", metavar="FOLDER", help="turn links to missing notes into to-do links in FOLDER")
+    ap.add_argument("--missing-to", metavar="FOLDER|auto",
+                    help="turn links to missing notes into to-do links in FOLDER (auto: sources vs concepts by name)")
     ap.add_argument("--report", metavar="FILE", help="write the full report as Markdown")
     args = ap.parse_args(argv)
     bundle = Path(args.bundle).resolve()

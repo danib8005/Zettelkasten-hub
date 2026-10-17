@@ -64,6 +64,17 @@ class T(unittest.TestCase):
         text = (self.root / "40_Sources/quelle.md").read_text(encoding="utf-8")
         self.assertIn("[fehlt-noch](/10_Concepts/fehlt-noch.md)", text)
 
+    def test_missing_auto_picks_folder(self):
+        (self.root / "40_Sources/q2.md").write_text("# Q2\n- [[urry-2013-societies-beyond-oil]] x\n", encoding="utf-8")
+        ml.run(self.root, apply=True, missing_to="auto")
+        self.assertIn("(/40_Sources/urry-2013-societies-beyond-oil.md)", (self.root / "40_Sources/q2.md").read_text(encoding="utf-8"))
+        self.assertIn("(/10_Concepts/fehlt-noch.md)", (self.root / "40_Sources/quelle.md").read_text(encoding="utf-8"))
+
+    def test_similar_name_reported(self):
+        (self.root / "40_Sources/q3.md").write_text("# Q3\n- [[psychological-safty]] x\n", encoding="utf-8")
+        stats = ml.run(self.root)
+        self.assertEqual(stats["similar"]["psychological-safty"], "psychological-safety")
+
     def test_ambiguous_not_changed(self):
         (self.root / "20_Frameworks").mkdir()
         (self.root / "20_Frameworks/psychological-safety.md").write_text(A, encoding="utf-8")
