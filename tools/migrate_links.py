@@ -12,6 +12,8 @@ slugified spelling (umlauts ae/oe/ue, lowercase, hyphens) or by `aliases:`.
 Not changed, only reported: links to notes that do not exist yet, and names that match several notes.
 With --missing-to FOLDER, links to missing notes become [name](/FOLDER/name.md): allowed as a to-do list.
 --missing-to auto picks the folder per name: names like lastname-2015-title go to 40_Sources, all others to 10_Concepts.
+--map FILE maps link names to existing notes, one per line: `name = note-file-stem` (a Markdown list item
+with `name` → `stem` also works). A mapped name wins over everything else; an unknown target is an error.
 The report lists, for each missing name, a very similar existing note (spelling variant), never applied automatically.
 Wikilinks inside fenced code blocks and inline code are left alone.
 --apply refuses to run on a git working tree with uncommitted changes (use --allow-dirty to override).
@@ -92,9 +94,32 @@ def build_index(bundle, folders):
     return by_key, titles
 
 
-def resolve(target, by_key):
+MAP_LINE = re.compile(r"^[-*]?\s*`?([^`=→\s][^`=→]*?)`?\s*(?:=|→|->)\s*`?([^`\s]+?)`?\s*$")
+
+
+def load_map(path, by_key):
+    """Read a name -> note-stem map. Returns {slug(name): rel path}. Raises ValueError on unknown/ambiguous targets."""
+    mapping, errors = {}, []
+    for n, line in enumerate(Path(path).read_text(encoding="utf-8").splitlines(), 1):
+        m = MAP_LINE.match(line.strip())
+        if not m or line.lstrip().startswith(("#", "---")):
+            continue
+        name, stem = m.group(1).strip(), m.group(2).strip()
+        hits = by_key.get(stem) or set()
+        if len(hits) != 1:
+            errors.append(f"{path}:{n}: target `{stem}` is {'ambiguous' if hits else 'not an existing note'}")
+            continue
+        mapping[slug(name)] = next(iter(hits))
+    if errors:
+        raise ValueError("\n".join(errors))
+    return mapping
+
+
+def resolve(target, by_key, mapping=None):
     """Return ('ok', rel) | ('missing', None) | ('ambiguous', [rels])."""
     name = target.strip()
+    if mapping and slug(name) in mapping:
+        return "ok", mapping[slug(name)]
     name = name.rsplit("/", 1)[-1]  # [[folder/name]] -> name
     for key in (name, re.sub(r"\.md$", "", name), slug(name)):
         hits = by_key.get(key)
@@ -113,7 +138,7 @@ def todo_folder(name, missing_to):
     return "40_Sources" if SOURCE_LIKE.match(slug(name)) else "10_Concepts"
 
 
-def convert_text(text, rel_file, by_key, titles, stats, missing_to=None):
+def convert_text(text, rel_file, by_key, titles, stats, missing_to=None, mapping=None):
     """Convert wikilinks in text. Returns new text. Updates stats."""
     out, in_fence = [], False
     for n, line in enumerate(text.split("\n"), 1):
@@ -133,7 +158,7 @@ def convert_text(text, rel_file, by_key, titles, stats, missing_to=None):
 
         def repl(m):
             target, _anchor, label = m.group(1), m.group(2), m.group(3)
-            status, hit = resolve(target, by_key)
+            status, hit = resolve(target, by_key, mapping)
             if status == "ok":
                 stats["converted"] += 1
                 title = titles.get(hit) or label or target
@@ -165,10 +190,11 @@ def git_dirty(bundle):
     return bool(res.stdout.strip())
 
 
-def run(bundle, apply=False, missing_to=None, folders=None):
+def run(bundle, apply=False, missing_to=None, folders=None, map_file=None):
     config = check.load_config()
     folders = folders or config["note_folders"]
     by_key, titles = build_index(bundle, folders)
+    mapping = load_map(map_file, by_key) if map_file else None
     stats = {"converted": 0, "to_do": 0, "missing": Counter(), "ambiguous": {},
              "missing_at": [], "ambiguous_at": [], "files": 0}
     changed = []
@@ -181,7 +207,7 @@ def run(bundle, apply=False, missing_to=None, folders=None):
             if "[[" not in old:
                 continue
             rel = path.relative_to(bundle).as_posix()
-            new = convert_text(old, rel, by_key, titles, stats, missing_to)
+            new = convert_text(old, rel, by_key, titles, stats, missing_to, mapping)
             if new != old:
                 changed.append((path, new))
     stats["files"] = len(changed)
@@ -226,6 +252,7 @@ def main(argv=None):
     ap.add_argument("--allow-dirty", action="store_true", help="allow --apply with uncommitted git changes")
     ap.add_argument("--missing-to", metavar="FOLDER|auto",
                     help="turn links to missing notes into to-do links in FOLDER (auto: sources vs concepts by name)")
+    ap.add_argument("--map", metavar="FILE", help="map link names to existing notes (name = note-stem per line)")
     ap.add_argument("--report", metavar="FILE", help="write the full report as Markdown")
     args = ap.parse_args(argv)
     bundle = Path(args.bundle).resolve()
@@ -236,7 +263,11 @@ def main(argv=None):
         print("refusing to --apply: uncommitted changes in the bundle. Commit first (or --allow-dirty).",
               file=sys.stderr)
         return 2
-    stats = run(bundle, args.apply, args.missing_to)
+    try:
+        stats = run(bundle, args.apply, args.missing_to, map_file=args.map)
+    except ValueError as err:
+        print(err, file=sys.stderr)
+        return 2
     report = render(stats, args.apply)
     if args.report:
         Path(args.report).write_text(report, encoding="utf-8")

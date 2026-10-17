@@ -75,6 +75,19 @@ class T(unittest.TestCase):
         stats = ml.run(self.root)
         self.assertEqual(stats["similar"]["psychological-safty"], "psychological-safety")
 
+    def test_map_file_redirects_name_to_existing_note(self):
+        m = self.root / "map.md"
+        m.write_text("# Zuordnung\n- `fehlt-noch` → `psychological-safety`\ngigerenzer-alt = gigerenzer-2015-risk-literacy\n", encoding="utf-8")
+        ml.run(self.root, apply=True, map_file=m)
+        text = (self.root / "40_Sources/quelle.md").read_text(encoding="utf-8")
+        self.assertIn("[Psychological Safety](/10_Concepts/psychological-safety.md) - noch nicht da", text)
+
+    def test_map_with_unknown_target_is_an_error(self):
+        m = self.root / "map.md"
+        m.write_text("x = gibt-es-nicht\n", encoding="utf-8")
+        with self.assertRaises(ValueError):
+            ml.run(self.root, map_file=m)
+
     def test_ambiguous_not_changed(self):
         (self.root / "20_Frameworks").mkdir()
         (self.root / "20_Frameworks/psychological-safety.md").write_text(A, encoding="utf-8")
