@@ -98,6 +98,21 @@ class T(unittest.TestCase):
         self.assertIn("[[90_Originals/a/b|b]]", text)
         self.assertEqual(sum(stats["outside"].values()), 2)
 
+    def test_target_in_a_folder_that_is_not_rewritten_is_still_found(self):
+        (self.root / "60_Own-Work").mkdir()
+        (self.root / "60_Own-Work/eigener-text.md").write_text("# Eigener Text\n", encoding="utf-8")
+        (self.root / "40_Sources/q5.md").write_text("# Q5\n- [[eigener-text]] x\n", encoding="utf-8")
+        ml.run(self.root, apply=True, missing_to="auto")
+        self.assertIn("[Eigener Text](/60_Own-Work/eigener-text.md)", (self.root / "40_Sources/q5.md").read_text(encoding="utf-8"))
+
+    def test_folders_option_rewrites_other_folders(self):
+        (self.root / "60_Own-Work").mkdir()
+        (self.root / "60_Own-Work/t.md").write_text("# T\n- [[psychological-safety]] x\n", encoding="utf-8")
+        rc = ml.main([str(self.root), "--apply", "--allow-dirty", "--folders", "60_Own-Work"])
+        self.assertEqual(rc, 0)
+        self.assertIn("(/10_Concepts/psychological-safety.md)", (self.root / "60_Own-Work/t.md").read_text(encoding="utf-8"))
+        self.assertIn("[[fehlt-noch]]", (self.root / "40_Sources/quelle.md").read_text(encoding="utf-8"))
+
     def test_ambiguous_not_changed(self):
         (self.root / "20_Frameworks").mkdir()
         (self.root / "20_Frameworks/psychological-safety.md").write_text(A, encoding="utf-8")

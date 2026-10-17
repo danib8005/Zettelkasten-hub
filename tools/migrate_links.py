@@ -15,6 +15,7 @@ With --missing-to FOLDER, links to missing notes become [name](/FOLDER/name.md):
 --map FILE maps link names to existing notes, one per line: `name = note-file-stem` (a Markdown list item
 with `name` → `stem` also works). A mapped name wins over everything else; an unknown target is an error.
 The report lists, for each missing name, a very similar existing note (spelling variant), never applied automatically.
+--folders 60_Own-Work,65_Consulting rewrites links in other folders (targets are always looked up in all numbered folders).
 Wikilinks inside fenced code blocks and inline code are left alone.
 --apply refuses to run on a git working tree with uncommitted changes (use --allow-dirty to override).
 """
@@ -199,7 +200,9 @@ def git_dirty(bundle):
 def run(bundle, apply=False, missing_to=None, folders=None, map_file=None):
     config = check.load_config()
     folders = folders or config["note_folders"]
-    by_key, titles = build_index(bundle, folders)
+    # targets are looked up in every numbered top-level folder (60_Own-Work, 65_Consulting, ...), links are only rewritten in `folders`
+    all_folders = sorted(d.name for d in bundle.iterdir() if d.is_dir() and re.match(r"^\d\d_", d.name))
+    by_key, titles = build_index(bundle, sorted(set(folders) | set(all_folders)))
     mapping = load_map(map_file, by_key) if map_file else None
     stats = {"outside": Counter(), "converted": 0, "to_do": 0, "missing": Counter(), "ambiguous": {},
              "missing_at": [], "ambiguous_at": [], "files": 0}
@@ -262,6 +265,7 @@ def main(argv=None):
     ap.add_argument("--allow-dirty", action="store_true", help="allow --apply with uncommitted git changes")
     ap.add_argument("--missing-to", metavar="FOLDER|auto",
                     help="turn links to missing notes into to-do links in FOLDER (auto: sources vs concepts by name)")
+    ap.add_argument("--folders", metavar="A,B", help="folders in which links are rewritten (default: note_folders of check_config.json)")
     ap.add_argument("--map", metavar="FILE", help="map link names to existing notes (name = note-stem per line)")
     ap.add_argument("--report", metavar="FILE", help="write the full report as Markdown")
     args = ap.parse_args(argv)
@@ -274,7 +278,8 @@ def main(argv=None):
               file=sys.stderr)
         return 2
     try:
-        stats = run(bundle, args.apply, args.missing_to, map_file=args.map)
+        stats = run(bundle, args.apply, args.missing_to,
+                    folders=[f for f in args.folders.split(",") if f] if args.folders else None, map_file=args.map)
     except ValueError as err:
         print(err, file=sys.stderr)
         return 2
