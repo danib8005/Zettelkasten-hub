@@ -5,7 +5,7 @@ translation_of: README.md
 <!-- Deutsche Übersetzung, nicht massgebend. Massgebend ist die englische README.md. -->
 # Zettelkasten-Hub
 
-Ein kleines, werkzeugneutrales System für eine Wissensbasis, die **belegt antwortet, ihre Lücken kennt und mit anderen zusammen wachsen kann**. Einfache Markdown-Notizen, eine gemeinsame Regeldatei (`AGENTS.md`), fünf Phasen-Agenten mit dreizehn Verfahren, elf Vorlagen, drei Skripte. Keine Bindung an einen Anbieter: Es läuft mit jedem Agenten, der Dateien lesen kann, und mit Chat-Werkzeugen über eine gebündelte Datei.
+Ein kleines, werkzeugneutrales System für eine Wissensbasis, die **belegt antwortet, ihre Lücken kennt und mit anderen zusammen wachsen kann**. Einfache Markdown-Notizen, eine gemeinsame Regeldatei (`AGENTS.md`), fünf Phasen-Agenten mit neunzehn Verfahren, elf Vorlagen, drei Skripte. Keine Bindung an einen Anbieter: Es läuft mit jedem Agenten, der Dateien lesen kann, und mit Chat-Werkzeugen über eine gebündelte Datei.
 
 > Stand: MVP 1, in Arbeit. Noch nicht von anderen Personen als dem Autor getestet.
 
@@ -29,7 +29,7 @@ flowchart LR
 | 4 Answer | [`answer`](agents/answer.md) | antwortet nur aus den Notizen, Herkunft pro Aussage, Lückenliste | `50_Open-Questions` (nur mit deiner Zustimmung) | answer-from-notes, record-open-question |
 | 5 Maintain | [`maintain`](agents/maintain.md) | führt den Check aus, prüft Notizen, macht Lücken zu nächsten Eingaben | nur Korrekturen, nach Bestätigung | run-check, review-notes, triage-open-links |
 | neben der Schleife | [`reflect`](agents/reflect.md) | schaut nach innen: prüft eine Position, bringt verarbeitete Notizen zurück, sichert dein eigenes Denken | Gedanken in `10_Concepts`, `50_Open-Questions` (nach Zustimmung) | challenge-position, revisit-notes, draft-first |
-| neben der Schleife | [`explore`](agents/explore.md) | schaut nach aussen: zeigt, wo die Notizen enden, findet Verbindungen als Hypothesen | `50_Open-Questions` (nach Zustimmung) | map-frontier, discover-connections, record-open-question |
+| neben der Schleife | [`explore`](agents/explore.md) | schaut nach aussen: zeigt, wo die Notizen enden, findet Verbindungen als Hypothesen, bietet Inspirations-Impulse | `50_Open-Questions` (nach Zustimmung) | map-frontier, discover-connections, inspire, record-open-question |
 
 Du wählst den Agenten; jeder schlägt am Ende den nächsten vor. Schreibende Agenten schlagen nach dem Speichern zudem Maintain vor. Jeder Agent hält seinen Kontext klein: gemeinsame Regeln, eigene Regeln und seine Skills, die kritischen Regeln am Anfang und am Ende wiederholt.
 
@@ -41,7 +41,7 @@ Du wählst den Agenten; jeder schlägt am Ende den nächsten vor. Schreibende Ag
 | Daten | Markdown-Notizen in einem Bundle (`example/` zeigt eines) | überall |
 | Regeln | [`AGENTS.md`](AGENTS.md): der gemeinsame Kern | Agenten, die Repo-Dateien lesen |
 | Agenten | [`agents/`](agents/): eine Rolle pro Phase, dazu schlanke Adapter in `.github/agents/` (GitHub Copilot) und `.claude/agents/` (Claude Code) | jeder Agent: «folge agents/answer.md» |
-| Verfahren | [`skills/`](skills/): vierzehn `SKILL.md`-Dateien als normale Markdown-Anleitung | von den Agenten genutzt; jeder Agent kann einem folgen |
+| Verfahren | [`skills/`](skills/): neunzehn `SKILL.md`-Dateien als normale Markdown-Anleitung | von den Agenten genutzt; jeder Agent kann einem folgen |
 | Prüfung und Bündeln | [`tools/check.py`](tools/check.py), [`tools/pack.py`](tools/pack.py), [`tools/catalog.py`](tools/catalog.py), [`tools/migrate_links.py`](tools/migrate_links.py), nur Python-Standardbibliothek | von Hand, in CI |
 | Zotero-Markierungen (optional) | [`tools/zotero_highlights.py`](tools/zotero_highlights.py): liest Markierungen aus einem laufenden Zotero (lesende lokale API) | der Agent Capture, nach Rückfrage; weglassen, wenn du Zotero nicht nutzt |
 

@@ -19,7 +19,7 @@ flowchart TB
   subgraph Core["Core (this repo, no knowledge)"]
     AG["AGENTS.md<br/>shared rules, the loop"]
     AN["agents/ capture, distill, connect,<br/>answer, maintain<br/>(+ thin tool adapters)"]
-    SK["skills/ 14 procedures<br/>in plain Markdown"]
+    SK["skills/ 19 procedures<br/>in plain Markdown"]
     TP["templates/<br/>note types, agent"]
     CK["tools/check.py<br/>structure, OKF, agents"]
     PK["tools/pack.py<br/>bundle into one file"]
@@ -70,7 +70,7 @@ Strict separation: **data** (Markdown) · **rules** (`AGENTS.md`) · **roles** (
 
 **Adapters**: `.github/agents/<name>.agent.md` (GitHub Copilot) and `.claude/agents/<name>.md` (Claude Code) hold only the tool's frontmatter and one line pointing to `AGENTS.md` and the neutral agent file. Their `tools:` are derived from the agent's write scope: all agents read, search and edit; only Maintain may run commands, and Capture may run `tools/zotero_highlights.py` and nothing else. Folder-level write limits cannot be enforced by these tools; they are declared in the agent file and checked in the acceptance test. `.vscode/settings.json` points VS Code to `skills/`.
 
-**`skills/`**: fourteen procedures, named verb-object, shared where useful:
+**`skills/`**: nineteen procedures, named verb-object, shared where useful:
 | Skill | Used by |
 |---|---|
 | `capture-inbox`, `capture-thought`, `capture-zotero` | Capture |
@@ -80,6 +80,8 @@ Strict separation: **data** (Markdown) · **rules** (`AGENTS.md`) · **roles** (
 | `write-concept`, `synthesize`, `write-tool` | Connect |
 | `answer-from-notes`, `record-open-question` | Answer |
 | `run-check`, `review-notes`, `triage-open-links` | Maintain |
+| `map-frontier`, `discover-connections`, `inspire` | Explore |
+| `challenge-position`, `revisit-notes` | Reflect |
 They name no tool; an agent uses whatever search and file access it has. The exception is `capture-zotero`, which needs `tools/zotero_highlights.py`; without command access the person runs it and pastes the output.
 
 **`tools/check.py`** (no AI, exit code 1 on errors):
