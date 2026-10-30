@@ -100,6 +100,8 @@ They name no tool; an agent uses whatever search and file access it has. The exc
 
 **`tools/pack.py`** (no AI): selects notes by keyword score (title counts triple) or by file list, then writes one `pack.md`. With `-a <agent>`: preamble → `AGENTS.md` → the agent file → its skills in `skills:` order → bundle `perspective.md` → notes, each under its path as heading → the agent's final check again at the end, so the rules sit at the start and the end and the notes in the middle; notes are then chosen only from the agent's `reads:` folders. With `-s <skill>` (exclusive with `-a`): one procedure instead of an agent. Notes are copied verbatim. It prints the character count and warns above 30,000 characters.
 
+**`tools/export.py`** (no AI): makes a filtered, generated copy of a bundle for another device or tool (work laptop, Copilot, a colleague), from a profile in `templates/export-profile.md`. Allowlist: only notes in the listed folders with an allowed `visibility:`, or approved by name; `visibility: private`, `.git`, `90_Originals`, `99_Raw-Data`, any `reflexion` folder and the leak-terms file never leave. A leak check against a names list stops the run without writing anything. The copy gets an `EXPORT.md`; running again removes files that are no longer approved. `--dry-run` first.
+
 **`tools/catalog.py`** (no AI): builds a thematic catalog of source notes from a manifest (one file per group, verbatim title, reference, core thesis and tags, each under its note path), for chat tools that need an overview of many sources. Used by the Answer agent without file access.
 
 **`tools/zotero_highlights.py`** (no AI): reads highlights from a running Zotero desktop app through its read-only local API (`127.0.0.1:23119`, personal library only; Zotero setting «Allow other applications on this computer to communicate with Zotero»). `status` checks Zotero, `search` finds an item, `fetch` prints one Markdown block per item (exact text, page label, the owner's comment) with the highlights not yet imported, `mark-done` records them in the bundle's `.zotero-sync.json` (library version and imported annotation keys) after the notes are saved. Ink and image annotations are skipped. Used by the Capture agent through `capture-zotero`.
@@ -127,9 +129,10 @@ Without file access: `python tools/pack.py <bundle> -k <keywords> -a answer`, th
 Own bundle and shared bundle side by side; a `bundles.md` file declares mount points and access (read / write). The checker will flag any link from a shared to an own bundle. Contributions flow upward by **promotion** (generalise, pseudonymise, move up; pull request or inbox file). A project module (manifest, hand-over package, promotion skill) builds on the same rules.
 
 ## 7. Visibility and safety
-- `visibility:` per note (private | team | public); missing means private. Only `public` notes may be exported.
+- `visibility:` per note (private | team | public); missing means private. By default only `public` notes are exported; the owner's export profile may allow `team` notes or approve notes by name (an agent never widens a profile).
 - Public bundles contain no verbatim book quotes; `check.py --example` enforces this for examples.
 - Person names: source notes use real names, project notes a role or abbreviation.
+- **Several devices, not everything everywhere:** do not sync the whole bundle. Make one generated copy per target with `tools/export.py` and a profile (allowlist, one-way); nothing flows back except through the inbox of the bundle. A sparse checkout is not a safety boundary (private notes stay in the Git objects and history).
 - Scripts only read and write local files; they send nothing anywhere. `zotero_highlights.py` also reads from Zotero on the same machine (`127.0.0.1`), never from the internet.
 
 ## 8. Decisions and trade-offs
@@ -152,4 +155,4 @@ Own bundle and shared bundle side by side; a `bundles.md` file declares mount po
 - No search index; fine for hundreds of notes, a hosted index is a later step.
 
 ## 10. Roadmap
-MVP 1 (this repo): shared rules, five phase agents with adapters, fourteen skills, templates, four scripts, example. Then: two bundles together (MVP 2); project module; a router agent; capture channels; MCP server (read-only) and hosting; surprise impulses and review impulses.
+MVP 1 (this repo): shared rules, five phase agents with adapters, fourteen skills, templates, six scripts, example. Then: two bundles together (MVP 2); project module; a router agent; capture channels; MCP server (read-only) and hosting; surprise impulses and review impulses.

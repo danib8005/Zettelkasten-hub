@@ -5,7 +5,7 @@ translation_of: README.md
 <!-- Deutsche Übersetzung, nicht massgebend. Massgebend ist die englische README.md. -->
 # Zettelkasten-Hub
 
-Ein kleines, werkzeugneutrales System für eine Wissensbasis, die **belegt antwortet, ihre Lücken kennt und mit anderen zusammen wachsen kann**. Einfache Markdown-Notizen, eine gemeinsame Regeldatei (`AGENTS.md`), fünf Phasen-Agenten mit neunzehn Verfahren, elf Vorlagen, drei Skripte. Keine Bindung an einen Anbieter: Es läuft mit jedem Agenten, der Dateien lesen kann, und mit Chat-Werkzeugen über eine gebündelte Datei.
+Ein kleines, werkzeugneutrales System für eine Wissensbasis, die **belegt antwortet, ihre Lücken kennt und mit anderen zusammen wachsen kann**. Einfache Markdown-Notizen, eine gemeinsame Regeldatei (`AGENTS.md`), fünf Phasen-Agenten mit neunzehn Verfahren, zwölf Vorlagen, sechs Skripte. Keine Bindung an einen Anbieter: Es läuft mit jedem Agenten, der Dateien lesen kann, und mit Chat-Werkzeugen über eine gebündelte Datei.
 
 > Stand: MVP 1, in Arbeit. Noch nicht von anderen Personen als dem Autor getestet.
 
@@ -42,7 +42,7 @@ Du wählst den Agenten; jeder schlägt am Ende den nächsten vor. Schreibende Ag
 | Regeln | [`AGENTS.md`](AGENTS.md): der gemeinsame Kern | Agenten, die Repo-Dateien lesen |
 | Agenten | [`agents/`](agents/): eine Rolle pro Phase, dazu schlanke Adapter in `.github/agents/` (GitHub Copilot) und `.claude/agents/` (Claude Code) | jeder Agent: «folge agents/answer.md» |
 | Verfahren | [`skills/`](skills/): neunzehn `SKILL.md`-Dateien als normale Markdown-Anleitung | von den Agenten genutzt; jeder Agent kann einem folgen |
-| Prüfung und Bündeln | [`tools/check.py`](tools/check.py), [`tools/pack.py`](tools/pack.py), [`tools/catalog.py`](tools/catalog.py), [`tools/migrate_links.py`](tools/migrate_links.py), nur Python-Standardbibliothek | von Hand, in CI |
+| Prüfung und Bündeln | [`tools/check.py`](tools/check.py), [`tools/pack.py`](tools/pack.py), [`tools/catalog.py`](tools/catalog.py), [`tools/migrate_links.py`](tools/migrate_links.py), [`tools/export.py`](tools/export.py), nur Python-Standardbibliothek | von Hand, in CI |
 | Zotero-Markierungen (optional) | [`tools/zotero_highlights.py`](tools/zotero_highlights.py): liest Markierungen aus einem laufenden Zotero (lesende lokale API) | der Agent Capture, nach Rückfrage; weglassen, wenn du Zotero nicht nutzt |
 
 ## Gebaut auf Standards

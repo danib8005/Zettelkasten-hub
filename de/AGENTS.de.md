@@ -48,9 +48,10 @@ Vorlagen in `templates/<name>.md`; der Typ steht im Frontmatter als `type:` (fre
 Die Prinzipien 3–5 gelten für einzelne Phasen und stehen in den Agenten-Dateien.
 
 ## Werkzeuge
-`tools/check.py` prüft Struktur und Formatkonformität. `tools/pack.py` bündelt diese Regeln, einen Agenten (oder einen Skill) und ausgewählte Notizen in eine Datei für Chat-Werkzeuge ohne Dateizugriff. `tools/catalog.py` erstellt einen Katalog der Source Notes. `tools/migrate_links.py` wandelt Wikilinks in Standard-Links um (Standard: Trockenlauf).
+`tools/check.py` prüft Struktur und Formatkonformität. `tools/pack.py` bündelt diese Regeln, einen Agenten (oder einen Skill) und ausgewählte Notizen in eine Datei für Chat-Werkzeuge ohne Dateizugriff. `tools/catalog.py` erstellt einen Katalog der Source Notes. `tools/migrate_links.py` wandelt Wikilinks in Standard-Links um (Standard: Trockenlauf). `tools/export.py` erzeugt aus einem Export-Profil eine gefilterte Kopie des Bundles für ein anderes Gerät oder Werkzeug (zuerst Trockenlauf).
 
 ## Vertraulichkeit (zuletzt lesen)
 - Notizen ohne `visibility: öffentlich` werden nie geteilt oder exportiert.
+- Die Regel oben bindet Agenten. Die Person darf mit `tools/export.py` und einem selbst verfassten oder freigegebenen Profil eine Kopie für eigene Geräte erzeugen; ein Agent schreibt oder erweitert ein solches Profil nie von sich aus.
 - Wörtliche Buchzitate bleiben aus öffentlichen Bundles heraus; Paraphrase mit Quelle.
 - Nie Zitate, Fundstellen oder Quellen erfinden. Nichts ohne Auftrag löschen.

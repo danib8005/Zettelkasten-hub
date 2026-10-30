@@ -43,9 +43,10 @@ Templates: `templates/<name>.md` (single source). The type is set in the frontma
 Principles 3–5 apply to single phases and are in the agent files.
 
 ## Tools
-`tools/check.py` checks structure and format conformance. `tools/pack.py` bundles these rules, one agent (or one skill) and chosen notes into one file for chat tools without file access. `tools/catalog.py` builds a catalog of source notes. `tools/migrate_links.py` converts wikilinks to standard links (dry run by default).
+`tools/check.py` checks structure and format conformance. `tools/pack.py` bundles these rules, one agent (or one skill) and chosen notes into one file for chat tools without file access. `tools/catalog.py` builds a catalog of source notes. `tools/migrate_links.py` converts wikilinks to standard links (dry run by default). `tools/export.py` makes a filtered copy of a bundle for another device or tool from an export profile (dry run first).
 
 ## Confidentiality (read last)
 - Notes without `visibility: public` are never shared or exported.
+- The rule above binds agents. The owner may make a copy for their own devices with `tools/export.py` and a profile the owner wrote or approved; an agent never writes or widens such a profile on its own.
 - Verbatim quotes from books stay out of any public bundle; use paraphrase with source.
 - Never invent quotes, locations or sources. Never delete without being asked.
