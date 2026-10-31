@@ -1,6 +1,6 @@
 # Zettelkasten-Hub
 
-A small, tool-neutral system for a knowledge base that **answers with sources, knows its gaps and can grow together with others**. Plain Markdown notes, one shared rules file (`AGENTS.md`), five phase agents with nineteen procedures, eleven templates, three scripts. No lock-in: it works with any agent that can read files, and with chat tools via a single bundled file.
+A small, tool-neutral system for a knowledge base that **answers with sources, knows its gaps and can grow together with others**. Plain Markdown notes, one shared rules file (`AGENTS.md`), five phase agents with nineteen procedures, twelve templates, six scripts. No lock-in: it works with any agent that can read files, and with chat tools via a single bundled file.
 
 > Status: MVP 1, work in progress. Not yet tested by people other than the author. German translation: [README.de.md](README.de.md).
 
@@ -37,7 +37,7 @@ You pick the agent; each one ends by suggesting the next. Writing agents also su
 | Rules | [`AGENTS.md`](AGENTS.md): the shared core | agents that read repository files |
 | Agents | [`agents/`](agents/): one role per phase, plus thin adapters in `.github/agents/` (GitHub Copilot) and `.claude/agents/` (Claude Code) | any agent: "follow agents/answer.md" |
 | Procedures | [`skills/`](skills/): fourteen `SKILL.md` files in plain Markdown | used by the agents; any agent can follow one |
-| Checks and bundling | [`tools/check.py`](tools/check.py), [`tools/pack.py`](tools/pack.py), [`tools/catalog.py`](tools/catalog.py), [`tools/migrate_links.py`](tools/migrate_links.py), Python standard library only | by hand, in CI |
+| Checks and bundling | [`tools/check.py`](tools/check.py), [`tools/pack.py`](tools/pack.py), [`tools/catalog.py`](tools/catalog.py), [`tools/migrate_links.py`](tools/migrate_links.py), [`tools/export.py`](tools/export.py), Python standard library only | by hand, in CI |
 | Zotero highlights (optional) | [`tools/zotero_highlights.py`](tools/zotero_highlights.py): reads highlights from a running Zotero (read-only local API) | the Capture agent, after asking; skip it if you do not use Zotero |
 
 ## Built on standards
