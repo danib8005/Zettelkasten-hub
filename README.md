@@ -41,7 +41,7 @@ You pick the agent; each one ends by suggesting the next. Writing agents also su
 | Zotero highlights (optional) | [`tools/zotero_highlights.py`](tools/zotero_highlights.py): reads highlights from a running Zotero (read-only local API) | the Capture agent, after asking; skip it if you do not use Zotero |
 
 ## Built on standards
-Notes are Markdown with YAML frontmatter, organised as an [Open Knowledge Format](docs/standards.md) bundle (checked by `tools/check.py`); rules are in `AGENTS.md`; agents and procedures are Markdown files; versioning is Git. Details and where we deviate: [docs/standards.md](docs/standards.md). How the parts fit together: [docs/architecture.md](docs/architecture.md).
+Notes are Markdown with YAML frontmatter, organised as an [Open Knowledge Format](docs/standards.md) bundle (checked by `tools/check.py`); rules are in `AGENTS.md`; agents and procedures are Markdown files; versioning is Git. Details and where we deviate: [docs/standards.md](docs/standards.md). How the parts fit together: [docs/architecture.md](docs/architecture.md). Projects and assignments live in a separate bundle, the [workbench](docs/workbench.md).
 
 ## Note types
 Capture, Thought, Concept, Framework, Synthesis, Source (lightweight or full), Tool, Open question. Templates are in [`templates/`](templates/), together with the template for agent files.

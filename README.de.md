@@ -46,7 +46,7 @@ Du wählst den Agenten; jeder schlägt am Ende den nächsten vor. Schreibende Ag
 | Zotero-Markierungen (optional) | [`tools/zotero_highlights.py`](tools/zotero_highlights.py): liest Markierungen aus einem laufenden Zotero (lesende lokale API) | der Agent Capture, nach Rückfrage; weglassen, wenn du Zotero nicht nutzt |
 
 ## Gebaut auf Standards
-Notizen sind Markdown mit YAML-Frontmatter und als Bundle nach dem [Open Knowledge Format](de/standards.md) organisiert (geprüft von `tools/check.py`); Regeln stehen in `AGENTS.md`; Agenten und Verfahren sind Markdown-Dateien; Versionierung läuft über Git. Einzelheiten und Abweichungen: [de/standards.md](de/standards.md). Wie die Teile zusammenspielen: [de/architecture.md](de/architecture.md).
+Notizen sind Markdown mit YAML-Frontmatter und als Bundle nach dem [Open Knowledge Format](de/standards.md) organisiert (geprüft von `tools/check.py`); Regeln stehen in `AGENTS.md`; Agenten und Verfahren sind Markdown-Dateien; Versionierung läuft über Git. Einzelheiten und Abweichungen: [de/standards.md](de/standards.md). Wie die Teile zusammenspielen: [de/architecture.md](de/architecture.md). Projekte und Aufträge liegen in einem eigenen Bundle, der [Werkbank](de/workbench.md).
 
 ## Notiz-Typen
 Capture, Gedanke, Konzept, Framework, Synthese, Source (leicht oder vollständig), Tool, Offene Frage. Vorlagen in [`templates/`](templates/) (deutsch: [`de/templates/`](de/templates/)), dazu die Vorlage für Agenten-Dateien.

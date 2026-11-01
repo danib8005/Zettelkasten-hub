@@ -124,6 +124,14 @@ class Export(unittest.TestCase):
         text = (self.out / "40_Sources/a-team.md").read_text(encoding="utf-8")
         self.assertNotIn("quote", text)
 
+    def test_workbench_is_never_exported(self):
+        (self.bundle / "perspective.md").write_text("---\ntype: Perspective\nkind: workbench\n---\n# P\n", encoding="utf-8")
+        self.prof()
+        with self.assertRaises(SystemExit) as cm:
+            self.run_export()
+        self.assertIn("workbench", str(cm.exception))
+        self.assertFalse(self.out.exists())
+
     def test_never_dirs(self):
         d = self.bundle / "40_Sources/reflexion"
         d.mkdir()
