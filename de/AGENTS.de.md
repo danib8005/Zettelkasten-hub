@@ -11,7 +11,7 @@ Gemeinsamer Kern für jeden Agenten, der in einem Wissens-Bundle (Ordner mit Mar
 - Aus den Notizen arbeiten, mit Quellen; sagen, was fehlt. Jede Aussage nennt ihre Herkunft (Notizpfad, eigene Notiz oder «nicht im Zettelkasten»).
 - Nie Zitate, Fundstellen oder Quellen erfinden. Allgemeinwissen als «nicht aus den Notizen» kennzeichnen, Hypothesen als Hypothesen.
 - Nichts ohne Auftrag löschen. Jede Änderung an einer bestehenden Notiz ankündigen (was, warum).
-- Notizen ohne `visibility: öffentlich` werden nie geteilt oder exportiert.
+- Notizen ohne `visibility: öffentlich` werden nie geteilt oder exportiert. Eine Werkbank wird nie exportiert, und Notizen verlinken nie in eine.
 
 ## Die Schleife
 Capture → Distill → Connect → Answer → Maintain → zurück zu Capture. Die Person wählt den Agenten; jeder Agent schlägt am Ende den nächsten vor.
@@ -28,6 +28,13 @@ Format: Markdown mit YAML-Frontmatter nach dem Open Knowledge Format (siehe [de/
 
 ## Struktur
 `00_Inbox` Unverarbeitetes · `10_Concepts` Konzepte und Gedanken · `20_Frameworks` · `30_Syntheses` · `40_Sources` Source Notes · `50_Open-Questions` offene Fragen, Link-Verdikte · `70_Tools` Checklisten, Formate, Entscheidungshilfen · `95_System` Vorlagen, Systemnotizen. Nur anlegen, was nötig ist. `index.md` und `log.md` sind reservierte Dateinamen (optional).
+
+## Werkbank (optionales zweites Bundle)
+Eine Werkbank hält die Vorhaben der Besitzerin oder des Besitzers (Projekte, Aufträge, Vorbereitungen) in einem eigenen Bundle, neben dem Notizen-Bundle und nie darin. Details: [de/workbench.md](workbench.md).
+- Ein Zuhause pro Vorhaben (ein Gerät, eine Vertraulichkeitsstufe). Was in zwei Kreise reicht, wird in zwei Vorhaben getrennt oder in die Notizen befördert; nichts wird synchronisiert.
+- Links laufen in eine Richtung: Werkbank → Notizen, als relativer Pfad zum Geschwister-Ordner (`../Notes/10_Concepts/x.md`; der Notizen-Ordner heisst auf jedem Gerät gleich). `tools/check.py` meldet Links aus den Notizen in eine Werkbank.
+- Wissen kommt nur durch Beförderung zurück: neu geschrieben als allgemeine, anonymisierte Notiz, zuerst als Entwurf. Dateien eines Vorhabens nie in die Notizen verschieben oder kopieren.
+- Eine Werkbank ist in ihrer `perspective.md` mit `kind: workbench` markiert; `tools/export.py` verweigert sie. Persönliche Reflexionen bleiben aus jedem Arbeitswerkzeug.
 
 ## Notiz-Typen
 Vorlagen in `templates/<name>.md`; der Typ steht im Frontmatter als `type:` (freier Text, englisch oder deutsch). Capture · Gedanke · Konzept (1–2 Seiten) · Framework (3–5 Seiten) · Synthese · Source · Tool · Offene Frage.
@@ -48,7 +55,7 @@ Vorlagen in `templates/<name>.md`; der Typ steht im Frontmatter als `type:` (fre
 Die Prinzipien 3–5 gelten für einzelne Phasen und stehen in den Agenten-Dateien.
 
 ## Werkzeuge
-`tools/check.py` prüft Struktur und Formatkonformität. `tools/pack.py` bündelt diese Regeln, einen Agenten (oder einen Skill) und ausgewählte Notizen in eine Datei für Chat-Werkzeuge ohne Dateizugriff. `tools/catalog.py` erstellt einen Katalog der Source Notes. `tools/migrate_links.py` wandelt Wikilinks in Standard-Links um (Standard: Trockenlauf). `tools/export.py` erzeugt aus einem Export-Profil eine gefilterte Kopie des Bundles für ein anderes Gerät oder Werkzeug (zuerst Trockenlauf).
+`tools/check.py` prüft Struktur und Formatkonformität (`--workbench` für eine Werkbank). `tools/pack.py` bündelt diese Regeln, einen Agenten (oder einen Skill) und ausgewählte Notizen in eine Datei für Chat-Werkzeuge ohne Dateizugriff. `tools/catalog.py` erstellt einen Katalog der Source Notes. `tools/migrate_links.py` wandelt Wikilinks in Standard-Links um (Standard: Trockenlauf). `tools/export.py` erzeugt aus einem Export-Profil eine gefilterte Kopie des Bundles für ein anderes Gerät oder Werkzeug (zuerst Trockenlauf).
 
 ## Vertraulichkeit (zuletzt lesen)
 - Notizen ohne `visibility: öffentlich` werden nie geteilt oder exportiert.

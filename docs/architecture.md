@@ -126,7 +126,7 @@ sequenceDiagram
 Without file access: `python tools/pack.py <bundle> -k <keywords> -a answer`, then upload or paste `pack.md` instead of the first two arrows.
 
 ## 6. Several bundles (MVP 2, not built)
-Own bundle and shared bundle side by side; a `bundles.md` file declares mount points and access (read / write). The checker will flag any link from a shared to an own bundle. Contributions flow upward by **promotion** (generalise, pseudonymise, move up; pull request or inbox file). A project module (manifest, hand-over package, promotion skill) builds on the same rules.
+Own bundle and shared bundle side by side; a `bundles.md` file declares mount points and access (read / write). The checker will flag any link from a shared to an own bundle. Contributions flow upward by **promotion** (generalise, pseudonymise, move up; pull request or inbox file). The first part is built as the **workbench**: a second bundle for undertakings that links one way into the notes (`kind: workbench`, `check.py --workbench`, `export.py` refuses it; see [workbench.md](workbench.md)). The promotion skill and a hand-over package are not built yet.
 
 ## 7. Visibility and safety
 - `visibility:` per note (private | team | public); missing means private. By default only `public` notes are exported; the owner's export profile may allow `team` notes or approve notes by name (an agent never widens a profile).

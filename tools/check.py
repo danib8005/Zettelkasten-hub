@@ -3,6 +3,8 @@
 
 Usage:
   python tools/check.py BUNDLE_DIR [--example]   check the notes of one bundle
+  python tools/check.py BUNDLE_DIR --workbench   check a workbench (also detected by `kind: workbench`
+                                                 in its perspective.md); see docs/workbench.md
   python tools/check.py --i18n [REPO_DIR]        repo check: German translations of system documents,
                                                  agents, their skills and their tool adapters
 
@@ -29,6 +31,8 @@ AGENT_FIELDS = ("type", "name", "description", "phase", "skills", "reads", "writ
 AGENT_SECTIONS = ("Role", "Goal and when to use", "Reads", "Writes", "Skills",
                   "Phase rules", "Handoff", "Final check")
 ADAPTERS = ((".github/agents", "{}.agent.md"), (".claude/agents", "{}.md"))
+SIBLING_RE = re.compile(r"^\.\./[^/.][^/]*/[^#]+\.md(#.*)?$")  # ../OtherBundle/folder/note.md
+WORKBENCH_RAW = "20_Material"  # raw material in a workbench: no frontmatter required
 
 
 def load_config():
@@ -36,6 +40,7 @@ def load_config():
         return json.loads(CONFIG_PATH.read_text(encoding="utf-8"))
     except (OSError, ValueError):
         return {"note_folders": ["10_Concepts", "40_Sources", "70_Tools"],
+                "workbench_folders": ["00_Inbox", "10_Undertakings", "30_Decisions", "95_System"],
                 "example_open_links": [], "i18n_required": []}
 
 
@@ -74,26 +79,37 @@ class Report:
 RESERVED = {"index.md", "log.md"}  # OKF reserved file names: not concept documents
 
 
-def note_files(bundle, config):
-    for folder in config["note_folders"]:
+def bundle_kind(bundle):
+    """`kind:` from the bundle's perspective.md ("workbench" or "notes"); notes if missing."""
+    p = Path(bundle) / "perspective.md"
+    if not p.is_file():
+        return "notes"
+    fm, _ = parse_frontmatter(p.read_text(encoding="utf-8").splitlines())
+    return "workbench" if fm.get("kind", "").lower() == "workbench" else "notes"
+
+
+def note_files(bundle, config, workbench=False):
+    for folder in config["workbench_folders" if workbench else "note_folders"]:
         base = bundle / folder
         if base.is_dir():
             yield from sorted(base.rglob("*.md"))
 
 
-def check_okf_conformance(bundle, config, report):
+def check_okf_conformance(bundle, config, report, workbench=False):
     """OKF v0.2 section 11: every non-reserved .md has frontmatter with a non-empty `type`."""
-    notes = set(note_files(bundle, config))
+    notes = set(note_files(bundle, config, workbench))
     for path in sorted(bundle.rglob("*.md")):
         if path.name in RESERVED or path in notes:
             continue  # notes get the same check in check_note
+        if workbench and WORKBENCH_RAW in path.relative_to(bundle).parts[:1]:
+            continue
         fm, _ = parse_frontmatter(path.read_text(encoding="utf-8").splitlines())
         if not fm.get("type"):
             report.add(path.relative_to(bundle), 1, "ERROR",
                        "missing frontmatter with non-empty `type:` (OKF conformance)")
 
 
-def check_note(path, bundle, report, config, example):
+def check_note(path, bundle, report, config, example, workbench=False):
     rel = path.relative_to(bundle)
     lines = path.read_text(encoding="utf-8").splitlines()
     fm, body_start = parse_frontmatter(lines)
@@ -107,6 +123,8 @@ def check_note(path, bundle, report, config, example):
         report.add(rel, 0, "WARN", "source note name should be lastname-year-shorttitle.md")
     if not any(re.search(r"review[- ]status", l, re.I) for l in lines):
         report.add(rel, 0, "ERROR", "missing review status")
+    if workbench and "visibility" in fm:
+        report.add(rel, 1, "ERROR", "`visibility:` has no meaning in a workbench: nothing in it is ever shared or exported")
 
     section = ""
     open_allowed = set(config.get("example_open_links", []))
@@ -125,6 +143,12 @@ def check_note(path, bundle, report, config, example):
             if re.match(r"^(https?:|mailto:|#)", target):
                 continue
             target_path = target.split("#")[0]
+            if target_path.startswith("../"):
+                if not workbench:
+                    report.add(rel, n, "ERROR", f"link `{target}` leaves the bundle: notes never link into a workbench")
+                elif not SIBLING_RE.match(target):
+                    report.add(rel, n, "ERROR", f"link `{target}` must be ../<notes-bundle>/<folder>/<note>.md (one level up)")
+                continue
             if not target_path.startswith("/"):
                 report.add(rel, n, "ERROR", f"link `{target}` is not bundle-relative (start with /)")
                 continue
@@ -148,14 +172,15 @@ def check_note(path, bundle, report, config, example):
         report.add(rel, 1, "ERROR", "example notes need `visibility: öffentlich` (or public)")
 
 
-def check_bundle(bundle, example, report):
+def check_bundle(bundle, example, report, workbench=False):
     config = load_config()
     if not bundle.is_dir():
         report.add(bundle, 0, "ERROR", "bundle directory not found")
         return
-    for path in note_files(bundle, config):
-        check_note(path, bundle, report, config, example)
-    check_okf_conformance(bundle, config, report)
+    workbench = workbench or bundle_kind(bundle) == "workbench"
+    for path in note_files(bundle, config, workbench):
+        check_note(path, bundle, report, config, example, workbench)
+    check_okf_conformance(bundle, config, report, workbench)
 
 
 def check_i18n(repo, report):
@@ -240,6 +265,7 @@ def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("path", nargs="?", default=None, help="bundle directory (or repo directory with --i18n)")
     ap.add_argument("--example", action="store_true", help="publishing rules for example bundles")
+    ap.add_argument("--workbench", action="store_true", help="check a workbench bundle (links to a sibling notes bundle allowed)")
     ap.add_argument("--i18n", action="store_true", help="repo check: German translations, agents, skills, adapters")
     args = ap.parse_args(argv)
     report = Report()
@@ -248,7 +274,7 @@ def main(argv=None):
     else:
         if not args.path:
             ap.error("BUNDLE_DIR is required")
-        check_bundle(Path(args.path), args.example, report)
+        check_bundle(Path(args.path), args.example, report, args.workbench)
     report.print()
     n_err, n_warn = len(report.errors), len(report.items) - len(report.errors)
     print(f"{n_err} error(s), {n_warn} warning(s)")

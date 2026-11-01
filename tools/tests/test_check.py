@@ -205,5 +205,50 @@ class I18n(unittest.TestCase):
         self.assertIn("does not exist", " ".join(messages(run(self.tmp, i18n=True))))
 
 
+class Workbench(unittest.TestCase):
+    def setUp(self):
+        self.tmp = Path(tempfile.mkdtemp())
+        self.wb = self.tmp / "Workbench"
+        (self.wb / "10_Undertakings" / "a").mkdir(parents=True)
+        (self.wb / "20_Material").mkdir()
+        (self.wb / "perspective.md").write_text("---\ntype: Perspective\nkind: workbench\n---\n# P\n", encoding="utf-8")
+        (self.wb / "20_Material" / "raw.md").write_text("no frontmatter at all\n", encoding="utf-8")
+        self.note = self.wb / "10_Undertakings" / "a" / "undertaking.md"
+
+    def write(self, extra_fm="", body="See [C](../Notes/10_Concepts/c.md) for why.\n"):
+        self.note.write_text(f"---\ntype: Undertaking\n{extra_fm}---\n# A\n{body}\n## Review status\n- Created: x\n", encoding="utf-8")
+
+    def test_clean_workbench_with_sibling_link_and_raw_material(self):
+        self.write()
+        self.assertEqual(run(self.wb).items, [])
+
+    def test_kind_is_detected_but_flag_also_works(self):
+        self.write()
+        (self.wb / "perspective.md").unlink()
+        self.assertTrue(messages(run(self.wb)))
+        report = check.Report()
+        check.check_bundle(self.wb, False, report, workbench=True)
+        self.assertEqual(report.items, [])
+
+    def test_visibility_is_an_error_in_a_workbench(self):
+        self.write("visibility: public\n")
+        self.assertTrue(any("visibility" in m for m in messages(run(self.wb))))
+
+    def test_link_must_go_one_level_up_only(self):
+        self.write(body="See [C](../../x/c.md) and [D](../d.md).\n")
+        self.assertEqual(sum("one level up" in m for m in messages(run(self.wb))), 2)
+
+    def test_notes_never_link_into_a_workbench(self):
+        notes = self.tmp / "Notes"
+        (notes / "10_Concepts").mkdir(parents=True)
+        (notes / "10_Concepts" / "c.md").write_text(
+            "---\ntype: Concept\n---\n# C\nSee [A](../Workbench/10_Undertakings/a/undertaking.md).\n\n## Review status\n- x\n",
+            encoding="utf-8")
+        self.assertTrue(any("never link into a workbench" in m for m in messages(run(notes))))
+
+    def test_example_and_repo_still_clean(self):
+        self.assertEqual(run(ROOT / "example", example=True).items, [])
+
+
 if __name__ == "__main__":
     unittest.main()

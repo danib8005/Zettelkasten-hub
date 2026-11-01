@@ -212,6 +212,9 @@ def main(argv=None):
     ap.add_argument("--strip-quotes", action="store_true", help="also drop blockquotes and Loc./S. references")
     args = ap.parse_args(argv)
     bundle, out = Path(args.bundle).resolve(), Path(args.out).resolve()
+    perspective = bundle / "perspective.md"
+    if perspective.is_file() and str(pack.frontmatter(pack.read(perspective)).get("kind", "")).lower() == "workbench":
+        raise SystemExit(f"{bundle} is a workbench (kind: workbench): a workbench is never exported")
     profile = load_profile(args.profile)
     if args.strip_quotes:
         profile["strip_quotes"] = True

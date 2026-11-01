@@ -19,6 +19,7 @@
     "docs/guide.md",
     "docs/standards.md",
     "docs/architecture.md",
+    "docs/workbench.md",
     "templates/thought.md",
     "templates/concept.md",
     "templates/framework.md",
@@ -26,6 +27,7 @@
     "templates/source-lightweight.md",
     "templates/source-full.md",
     "templates/tool.md",
+    "templates/undertaking.md",
     "templates/perspective.md",
     "templates/agent.md",
     "templates/capture.md",
@@ -37,5 +39,12 @@
     "agents/maintain.md",
     "agents/reflect.md",
     "agents/explore.md"
+  ],
+  "workbench_folders": [
+    "00_Inbox",
+    "10_Undertakings",
+    "10_Vorhaben",
+    "30_Decisions",
+    "95_System"
   ]
 }

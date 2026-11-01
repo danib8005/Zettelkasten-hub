@@ -6,7 +6,7 @@ Shared core for every agent working in a knowledge bundle (a folder of Markdown 
 - Work from the notes, with sources; say what is missing. Every statement names its origin (note path, own note, or «not in the notes»).
 - Never invent quotes, locations or sources. Label general knowledge «not from the notes» and hypotheses as hypotheses.
 - Never delete without being asked. Announce every change to an existing note (what, why).
-- Notes without `visibility: public` are never shared or exported.
+- Notes without `visibility: public` are never shared or exported. A workbench is never exported, and notes never link into one.
 
 ## The loop
 Capture → Distill → Connect → Answer → Maintain → back to Capture. The person picks the agent; each agent ends by suggesting the next one.
@@ -23,6 +23,13 @@ Format: plain Markdown with YAML frontmatter, aligned with the Open Knowledge Fo
 
 ## Structure
 `00_Inbox` unprocessed captures · `10_Concepts` concepts and thoughts · `20_Frameworks` · `30_Syntheses` · `40_Sources` source notes · `50_Open-Questions` open questions, link verdicts · `70_Tools` checklists, formats, decision aids · `95_System` templates, system notes. Create only the folders you need. `index.md` and `log.md` are reserved file names (optional overview and change history).
+
+## Workbench (optional second bundle)
+A workbench holds the owner's undertakings (projects, assignments, preparations) in a bundle of its own, beside the notes bundle and never inside it. Details: [docs/workbench.md](docs/workbench.md).
+- One home per undertaking (one device, one confidentiality level). What spans two circles is split into two undertakings or promoted into the notes; nothing is synchronised.
+- Links run one way: workbench → notes, as a relative path to the sibling folder (`../Notes/10_Concepts/x.md`; the notes folder keeps its name on every device). `tools/check.py` flags links from the notes into a workbench.
+- Knowledge returns only by promotion: written anew as a general, anonymised note, as a draft first. Never move or copy an undertaking's files into the notes.
+- A workbench is marked `kind: workbench` in its `perspective.md`; `tools/export.py` refuses it. Personal reflections stay out of any work tool.
 
 ## Note types
 Templates: `templates/<name>.md` (single source). The type is set in the frontmatter as `type:`; its value is free text (English or German). Capture · Thought (raw idea) · Concept (1–2 pages) · Framework (3–5 pages) · Synthesis · Source · Tool · Open question.
@@ -43,7 +50,7 @@ Templates: `templates/<name>.md` (single source). The type is set in the frontma
 Principles 3–5 apply to single phases and are in the agent files.
 
 ## Tools
-`tools/check.py` checks structure and format conformance. `tools/pack.py` bundles these rules, one agent (or one skill) and chosen notes into one file for chat tools without file access. `tools/catalog.py` builds a catalog of source notes. `tools/migrate_links.py` converts wikilinks to standard links (dry run by default). `tools/export.py` makes a filtered copy of a bundle for another device or tool from an export profile (dry run first).
+`tools/check.py` checks structure and format conformance (`--workbench` for a workbench). `tools/pack.py` bundles these rules, one agent (or one skill) and chosen notes into one file for chat tools without file access. `tools/catalog.py` builds a catalog of source notes. `tools/migrate_links.py` converts wikilinks to standard links (dry run by default). `tools/export.py` makes a filtered copy of a bundle for another device or tool from an export profile (dry run first).
 
 ## Confidentiality (read last)
 - Notes without `visibility: public` are never shared or exported.
