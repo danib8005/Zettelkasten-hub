@@ -3,6 +3,9 @@ type: Synthesis
 ---
 # [Synthesis title — make the tension visible]
 
+**Question:** [the triggering question in one sentence]
+**Status:** version 1 (YYYY-MM)
+
 ## Purpose and core question
 [What is the overarching question? Why is a joint view of several sources needed?]
 
@@ -52,6 +55,12 @@ type: Synthesis
 
 ## Practical implications
 - [For practice / teaching / research: concrete consequence or open question]
+
+---
+
+## Development
+_(Only if the synthesis keeps evolving: dated versions, what shifted and why.)_
+- **Version 1 (YYYY-MM):** [starting point, occasion]
 
 ---
 

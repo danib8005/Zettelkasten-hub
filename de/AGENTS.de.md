@@ -50,8 +50,9 @@ Vorlagen in `templates/<name>.md`; der Typ steht im Frontmatter als `type:` (fre
 - Personen: Source Notes mit echten Namen; Projekt- und Reflexionsnotizen mit Rolle oder vereinbartem Kürzel. Bei Pseudonymen die Schlüsseltabelle ausserhalb jeder exportierbaren Notiz halten und nie exportieren. Pseudonymisierung ist keine Anonymisierung.
 
 ## Qualitätsprinzipien (alle Phasen)
-1. **Belegt antworten:** jede Aussage mit Herkunft; Lücken benennen; Deutung und Hypothesen kennzeichnen.
+1. **Belegt antworten:** jede Aussage mit Herkunft; Lücken benennen; Deutung und Hypothesen kennzeichnen. Literatur, die die Besitzerin oder der Besitzer kennt, die aber keine Source Note hat, steht als «Vorwissen» (nicht in den Notizen).
 2. **Präzise und einfach:** Kernaussage zuerst, in einem Satz. Eine Standarddefinition pro Konzept: verlinken statt neu definieren.
+6. **Wissen zuerst:** Eine Frage, eine Auswertung oder ein Gedanke wird zuerst eine Notiz (Konzept, Gedanke, Framework oder Synthese; bei Weiterentwicklung mit `Frage:`, `Stand:` und dem Abschnitt «Entwicklung»). Ein Vorhaben entsteht nur bei einem Auftrag, einem Termin oder einem Ergebnis ausserhalb der Notizen. Der Erfahrungskontext steht oben in der Notiz, anonymisiert, als eigene Notiz.
 Die Prinzipien 3–5 gelten für einzelne Phasen und stehen in den Agenten-Dateien.
 
 ## Werkzeuge

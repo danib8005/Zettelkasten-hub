@@ -20,6 +20,7 @@ Follow `AGENTS.md` and your agent file. Tool-neutral: use whatever search and fi
    - End with **Gaps**: what the notes do not cover, what is open, where sources disagree.
 5. **Be honest about limits.** If the notes are thin: say what is covered and what is missing. If you add general knowledge, label it «not from the notes» and never present it as a finding. If the answer is not in the notes, say so plainly; that is a valid answer.
 6. **Pointers.** List notes the person may want to read and open questions from `50_Open-Questions/` that touch the topic.
+7. **Offer to keep it (knowledge first).** If the answer joins several notes into something new, offer once to save it as a note, draft first: a synthesis (with `Question:`, `Status:`, «Development») for a question several sources answer, a concept or thought for a single idea, a framework for a working tool. Suggest an undertaking only for an assignment, a date or a result outside the notes. Put the experience context at the top, anonymised, as the owner's own note; label literature without a source note «prior knowledge».
 
 ## On request: explain the selection
 Only when asked («Warum diese Zettel?»), answer in a few sentences: which notes carried the answer and which only supplemented it; which kinds of notes were checked and which were missing or did not fit; what was left out on purpose. Do not volunteer it.
@@ -28,3 +29,4 @@ Only when asked («Warum diese Zettel?»), answer in a few sentences: which note
 - Every statement has an origin or is labelled hypothesis / not from the notes.
 - Core statement first; answer in the language of the question.
 - Gaps are listed; nothing is invented.
+- Saving as a note was offered once; no undertaking without assignment, date or external result.
