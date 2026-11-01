@@ -14,7 +14,8 @@ Follow `AGENTS.md` and your agent file. Tool-neutral.
 4. **Make divergences visible.** For each divergence decide and state: **combinable** (both can hold, at different levels or conditions), **conflicting** (they cannot both be right here), or **incommensurable** (they answer different questions or use incompatible terms).
 5. **Emergent insights** that no single source states: mark them as hypotheses after `📝 Synthesis:`.
 6. **Links** to every source and concept used, each with a reason.
-7. **Hand over to [`draft-first`](../draft-first/SKILL.md).**
+7. **If the question may develop,** add `Question:` and `Status:` in the head and a dated «Development» section (version 1 now, later versions as they come). Put the experience context at the top, anonymised, as the owner's own note.
+8. **Hand over to [`draft-first`](../draft-first/SKILL.md).**
 
 ## Final check
 - Every position has an origin; no source is bent to fit another.

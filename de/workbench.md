@@ -38,10 +38,18 @@ Eine Werkbank wird in ihrer `perspective.md` markiert: `kind: workbench`.
 6. **Reflexionen bleiben aus Arbeitswerkzeugen.** Persönliche Reflexionen (Erlebnislog, Feedbackberichte, Notizen zu Personen) gehören in eine private Werkbank oder die privaten Notizen, auch wenn sie von der Arbeit handeln.
 7. **Personen mit Rolle.** Rolle oder vereinbartes Kürzel, wie in `AGENTS.md`.
 
+## Beförderung (Ablauf)
+Wissen zuerst: Eine neue Frage oder Auswertung wird eine Notiz, kein Vorhaben. Enthält ein Dokument in einem Vorhaben Wissen:
+1. **Stränge trennen.** Was nur wegen des Vorhabens existiert (Auftrag, Namen, Zahlen, Stand), vom Teil trennen, der auch ohne es gilt.
+2. **Typ pro Strang wählen.** Eine Synthese nur, wenn die kombinierten Quellen in den Notizen liegen; sonst ein Konzept oder Gedanke. Literatur, die die Besitzerin oder der Besitzer ohne Source Note kennt, steht als «Vorwissen».
+3. **Zuerst die Notizen prüfen.** Steht der allgemeine Teil schon da? Dann verlinken, nicht doppeln.
+4. **Anonymisieren und neu schreiben.** Den Erfahrungskontext oben als eigene Notiz, ohne Organisationsnamen und Zahlen.
+5. **Zuerst Entwurf,** dann speichern. Danach darf das Vorhaben auf die Notiz verlinken (einseitig).
+
 ## Prüfung
 `python tools/check.py Workbench --workbench` (oder nur der Pfad, wenn `perspective.md` `kind: workbench` sagt). Prüft Struktur und Review-Status wie bei Notizen, erlaubt Links `../<Notizen-Ordner>/…` und meldet `visibility:`.
 
 ## Noch nicht gebaut
-- Ein Beförderungs-Skill (Vorhaben → Notiz-Entwurf, mit Anonymisierungs-Prüfung).
+- Ein Beförderungs-Skill, der den obigen Ablauf automatisiert (Vorhaben → Notiz-Entwurf, mit Anonymisierungs-Prüfung).
 - Skills rund um Vorhaben: Briefing, To-dos, Plan, Präsentation.
 - Eine Backup-Regel für eine Werkbank, die nur auf einem Gerät liegt: das entscheidet die Besitzerin oder der Besitzer.

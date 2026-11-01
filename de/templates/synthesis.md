@@ -4,6 +4,9 @@ translation_of: templates/synthesis.md   # Übersetzung, nicht massgebend; beim 
 ---
 # [Synthese-Titel — Spannung sichtbar machen]
 
+**Frage:** [auslösende Frage in einem Satz]
+**Stand:** Fassung 1 (JJJJ-MM)
+
 ## Zweck und Kernfrage
 [Was ist die übergeordnete Frage? Warum braucht es die Zusammenschau mehrerer Quellen?]
 
@@ -53,6 +56,12 @@ translation_of: templates/synthesis.md   # Übersetzung, nicht massgebend; beim 
 
 ## Praktische Implikationen
 - [Für Praxis / Lehre / Forschung: konkrete Folge oder offene Frage]
+
+---
+
+## Entwicklung
+_(Nur bei Weiterentwicklung: datierte Fassungen, was sich warum verschoben hat.)_
+- **Fassung 1 (JJJJ-MM):** [Ausgangslage, Anlass]
 
 ---
 

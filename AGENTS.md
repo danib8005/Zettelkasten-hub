@@ -45,8 +45,9 @@ Templates: `templates/<name>.md` (single source). The type is set in the frontma
 - People: source notes use real names; project and reflection notes use a role or an agreed abbreviation. If you pseudonymise, keep the key table outside any exportable note and never export it. Pseudonymisation is not anonymisation.
 
 ## Quality principles (all phases)
-1. **Answer with sources.** Every statement names its origin; name gaps; mark interpretation and hypotheses as such.
+1. **Answer with sources.** Every statement names its origin; name gaps; mark interpretation and hypotheses as such. Literature the owner knows but that has no source note is labelled «prior knowledge» (not in the notes).
 2. **Precise and simple.** Core statement first, in one sentence. One standard definition per concept: link instead of redefining.
+6. **Knowledge first.** A question, an analysis or a thought becomes a note first (concept, thought, framework or synthesis; with `Question:`, `Status:` and a «Development» section if it keeps evolving). An undertaking exists only for an assignment, a date or a result outside the notes. Put the experience context at the top of the note, anonymised, as your own note.
 Principles 3–5 apply to single phases and are in the agent files.
 
 ## Tools

@@ -33,10 +33,18 @@ Mark a bundle as a workbench in its `perspective.md`: `kind: workbench`.
 6. **Reflections stay out of work tools.** Personal reflections (experience logs, feedback reports, notes on individuals) belong in a private workbench or the private notes, even when they are about work.
 7. **People by role.** Use a role or an agreed abbreviation, as in `AGENTS.md`.
 
+## Promotion (procedure)
+Knowledge first: a new question or analysis becomes a note, not an undertaking. When a document in an undertaking holds knowledge:
+1. **Split the strands.** Separate what exists only because of the undertaking (assignment, names, numbers, status) from what holds without it.
+2. **Choose the type per strand.** A synthesis only if the sources it combines are in the notes; otherwise a concept or thought. Literature the owner knows without a source note is labelled «prior knowledge».
+3. **Check the notes first.** Is the general part already there? Then link, do not duplicate.
+4. **Anonymise and write anew.** Put the experience context at the top as the owner's own note, without organisation names or figures.
+5. **Draft first,** then save. Afterwards the undertaking may link to the note (one way).
+
 ## Check
 `python tools/check.py Workbench --workbench` (or just the path, when `perspective.md` says `kind: workbench`). It checks structure and review status like for notes, allows `../<notes-folder>/…` links, and reports `visibility:`.
 
 ## Not built yet
-- A promotion skill (undertaking → draft note, with anonymisation check).
+- A promotion skill that automates the procedure above (undertaking → draft note, with anonymisation check).
 - Skills around undertakings: briefing, to-dos, plan, presentation.
 - A backup rule for a workbench that lives on one device only: that is the owner's decision.
