@@ -1,6 +1,7 @@
 ---
 type: Export profile
 name: work
+audience: owner
 folders: [40_Sources, 70_Tools]
 visibility: [team, public]
 include: []
@@ -13,6 +14,7 @@ leak-terms: 95_System/people-key.md
 Use with `python tools/export.py BUNDLE_DIR THIS_FILE -o OUT_DIR` (add `--dry-run` first). The frontmatter above is the profile; this text is for people.
 
 ## What the keys mean
+- `audience`: who may read the copy: `owner` (only you, on your own device), `team` or `public`. Required. Verbatim book quotes only go into an owner copy; for the others `strip-quotes` must be `true`.
 - `folders`: note folders to take from. A note needs `visibility:` with one of the listed values; without it a note is private.
 - `include`: paths or globs you approve by name, e.g. `65_Consulting/project-a/**`. These notes need no `visibility:`; a note marked `private` is never exported.
 - `exclude`: paths or globs that never leave, whatever else says yes.

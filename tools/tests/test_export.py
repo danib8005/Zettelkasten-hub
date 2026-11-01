@@ -39,7 +39,7 @@ class Export(unittest.TestCase):
         self.tmp.cleanup()
 
     def prof(self, **kw):
-        fm = {"name": "work", "folders": "[40_Sources]", "visibility": "[team, public]"}
+        fm = {"name": "work", "audience": "owner", "folders": "[40_Sources]", "visibility": "[team, public]"}
         fm.update(kw)
         self.profile.write_text("---\n" + "".join(f"{k}: {v}\n" for k, v in fm.items()) + "---\n", encoding="utf-8")
 
@@ -123,6 +123,25 @@ class Export(unittest.TestCase):
         self.run_export("--strip-quotes")
         text = (self.out / "40_Sources/a-team.md").read_text(encoding="utf-8")
         self.assertNotIn("quote", text)
+
+    def test_audience_required(self):
+        self.prof(audience="")
+        with self.assertRaises(SystemExit):
+            self.run_export()
+
+    def test_non_owner_needs_strip_quotes(self):
+        self.prof(audience="team")
+        with self.assertRaises(SystemExit):
+            self.run_export()
+        self.assertFalse(self.out.exists())
+        self.prof(audience="team", **{"strip-quotes": "true"})
+        self.assertEqual(self.run_export(), 0)
+        self.assertNotIn("quote", (self.out / "40_Sources/a-team.md").read_text(encoding="utf-8"))
+
+    def test_manifest_states_audience(self):
+        self.prof()
+        self.run_export()
+        self.assertIn("Audience: owner", (self.out / "EXPORT.md").read_text(encoding="utf-8"))
 
     def test_never_dirs(self):
         d = self.bundle / "40_Sources/reflexion"
