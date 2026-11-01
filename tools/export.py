@@ -6,6 +6,8 @@ Usage:
 
 The profile is a Markdown file with frontmatter (keys are plain `key: value`, lists as `[a, b]`):
   name:         short name of the target, e.g. work
+  audience:     who may read the copy: owner (only you, on your own device) | team | public. Required.
+                Verbatim book quotes only go into an owner copy; for team or public, strip-quotes must be true.
   folders:      note folders to take from; the visibility rule applies to them
   visibility:   values allowed in `visibility:` (default: public; `private` is ignored); a note without the key is private
   include:      paths or globs you approve by name (a folder name or `65_Consulting/x/**`);
@@ -79,9 +81,12 @@ def load_profile(path):
                        if v != "private"] or ["public"],
         "include": as_list(fm.get("include")),
         "exclude": as_list(fm.get("exclude")),
+        "audience": str(fm.get("audience", "")).lower(),
         "strip_quotes": str(fm.get("strip-quotes", "false")).lower() == "true",
         "leak_terms": fm.get("leak-terms", ""),
     }
+    if profile["audience"] not in ("owner", "team", "public"):
+        raise SystemExit("profile needs `audience:` owner | team | public (who may read the copy)")
     if not profile["folders"] and not profile["include"]:
         raise SystemExit("profile has neither `folders:` nor `include:`: nothing would be exported")
     return profile
@@ -191,6 +196,7 @@ def write_copy(out, selected, profile, skipped, n_open):
         reasons[why] = reasons.get(why, 0) + 1
     lines = ["---", "type: System", "---", f"# Export: {profile['name']}", "",
              f"Generated copy, {datetime.date.today().isoformat()}. Do not edit here: changes go back through the inbox of the bundle.",
+             f"Audience: {profile['audience']}" + (" — for the owner only, on their own device; do not share, upload to a shared space or sync to a shared folder" if profile["audience"] == "owner" else ""),
              f"Files: {len(selected)} · open links to notes that are not in this copy: {n_open}",
              "Not exported: " + (", ".join(f"{n}× {why}" for why, n in sorted(reasons.items())) or "nothing"), "", "## Files"]
     lines += [f"- `{rel}`" for rel in sorted(selected)]
@@ -212,6 +218,8 @@ def main(argv=None):
     profile = load_profile(args.profile)
     if args.strip_quotes:
         profile["strip_quotes"] = True
+    if profile["audience"] != "owner" and not profile["strip_quotes"]:
+        raise SystemExit("audience is not owner: verbatim book quotes must not leave; set `strip-quotes: true`")
     if out == bundle or bundle in out.parents:
         raise SystemExit("OUT_DIR must be outside the bundle")
     terms = load_terms(bundle, profile["leak_terms"])
