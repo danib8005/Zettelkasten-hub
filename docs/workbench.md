@@ -41,6 +41,9 @@ Knowledge first: a new question or analysis becomes a note, not an undertaking. 
 4. **Anonymise and write anew.** Put the experience context at the top as the owner's own note, without organisation names or figures.
 5. **Draft first,** then save. Afterwards the undertaking may link to the note (one way).
 
+## Hosted projects
+An undertaking may use a hosted assistant project as a working space. The workbench stays the home and keeps a small reference file. Criterion, template and closing rule: [claude-project](claude-project.md).
+
 ## Check
 `python tools/check.py Workbench --workbench` (or just the path, when `perspective.md` says `kind: workbench`). It checks structure and review status like for notes, allows `../<notes-folder>/…` links, and reports `visibility:`.
 

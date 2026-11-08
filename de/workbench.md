@@ -46,6 +46,9 @@ Wissen zuerst: Eine neue Frage oder Auswertung wird eine Notiz, kein Vorhaben. E
 4. **Anonymisieren und neu schreiben.** Den Erfahrungskontext oben als eigene Notiz, ohne Organisationsnamen und Zahlen.
 5. **Zuerst Entwurf,** dann speichern. Danach darf das Vorhaben auf die Notiz verlinken (einseitig).
 
+## Gehostete Projekte
+Ein Vorhaben darf ein gehostetes Assistenten-Projekt als Arbeitsraum nutzen. Die Werkbank bleibt das Zuhause und führt eine kleine Referenzdatei. Kriterium, Vorlage und Abschlussregel: [claude-project](claude-project.md).
+
 ## Prüfung
 `python tools/check.py Workbench --workbench` (oder nur der Pfad, wenn `perspective.md` `kind: workbench` sagt). Prüft Struktur und Review-Status wie bei Notizen, erlaubt Links `../<Notizen-Ordner>/…` und meldet `visibility:`.
 
